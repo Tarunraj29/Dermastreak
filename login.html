@@ -68,6 +68,20 @@
         <form class="space-y-5">
           <div>
             <label class="block text-sm font-medium text-slate-700"
+              >User Name</label
+            >
+            <input
+              id="username"
+              type="text"
+              name="username"
+              required
+              placeholder="Enter your username"
+              class="mt-1 block w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-green-500"
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-slate-700"
               >Email Address</label
             >
             <input
@@ -216,19 +230,31 @@
     </footer>
 
     <!-- Login Redirect Script -->
+    
     <script>
-      function handleLogin() {
-        const userType = document.getElementById('userType').value;
-        if (!userType) {
-          alert('Please select whether you are a Patient or Doctor.');
-          return;
-        }
-        if (userType === 'patient') {
-          window.location.href = 'patient.html';
-        } else if (userType === 'doctor') {
-          window.location.href = 'doctor_dashboard.html';
-        }
-      }
-    </script>
+  function handleLogin() {
+    const userType = document.getElementById('userType').value;
+    const username = document.getElementById('username').value.trim();
+
+    if (!userType) {
+      alert('Please select whether you are a Patient or Doctor.');
+      return;
+    }
+
+    if (!username) {
+      alert('Please enter a username.');
+      return;
+    }
+
+    if (userType === 'patient') {
+      // Pass username as query param to patient.html
+      window.location.href = `patient.html?username=${encodeURIComponent(username)}`;
+    } else if (userType === 'doctor') {
+      // You could also pass username if needed
+      window.location.href = 'doctor_dashboard.html';
+    }
+  }
+</script>
+
   </body>
 </html>

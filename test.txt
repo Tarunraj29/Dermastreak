@@ -1,0 +1,4 @@
+"Hello"
+"Lazygit"
+"Neovim"
+"Test"
