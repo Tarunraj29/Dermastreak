@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dermastreak</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .image-container {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-rows: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+        max-width: 620px;
+        position: relative;
+      }
+      .image-container img {
+        border-radius: 0.5rem;
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+          0 4px 6px -4px rgb(0 0 0 / 0.1);
+      }
+      .btn-camera {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        background-color: #d1fae5;
+        border-radius: 9999px;
+        padding: 0.5rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 20;
+      }
+      .btn-camera:hover,
+      .btn-camera:focus {
+        background-color: #a7f3d0;
+        outline: none;
+        box-shadow: 0 0 0 3px #34d399;
+      }
+      .feature-card {
+        transition: transform 0.3s ease;
+      }
+      .feature-card:hover,
+      .feature-card:focus {
+        transform: scale(1.05);
+        z-index: 10;
+        outline: none;
+      }
+      .btn-scale {
+        transition: transform 0.3s ease;
+        display: inline-block;
+      }
+      .btn-scale:hover,
+      .btn-scale:focus {
+        transform: scale(1.05);
+        outline: none;
+      }
+    </style>
+  </head>
+  <body class="bg-[#f3f9ff] text-slate-900">
+    <header class="bg-white shadow">
+      <nav
+        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16"
+      >
+        <a href="home.html" class="flex items-center space-x-3">
+          <img
+            src="WhatsApp Image 2025-07-15 at 14.21.54_e1b4ade7.jpg"
+            class="h-12 w-12 rounded-full"
+            alt="Dermastreak Logo"
+          />
+
+          <span class="font-extrabold text-slate-900 text-lg">Dermastreak</span>
+        </a>
+        <div class="hidden md:flex items-center space-x-4 text-sm font-normal">
+          <a href="home.html" class="hover:text-green-600 text-green-500"
+            >Home</a
+          >
+          <a href="about.html" class="hover:text-green-600">About</a>
+          <a href="services.html" class="hover:text-green-600">Services</a>
+          <a href="blog.html" class="hover:text-green-600">Blog</a>
+          <a href="contact.html" class="hover:text-green-600">Contact</a>
+          <a
+            href="login.html"
+            class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-slate-700 bg-white hover:bg-gray-50 focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+            >Login</a
+          >
+          <a
+            href="registration.html"
+            class="inline-flex btn-scale items-center px-4 py-2 border border-transparent text-sm font-semibold rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+            >Sign Up</a
+          >
+        </div>
+      </nav>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-20">
+      <section
+        class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center max-w-5xl mx-auto"
+      >
+        <div
+          class="flex flex-col items-start justify-center space-y-6 max-w-xl mx-auto text-center sm:text-left"
+        >
+          <h1
+            class="text-4xl sm:text-5xl font-extrabold leading-tight text-slate-900"
+          >
+            Track Your Skin.<br />
+            <span class="text-green-600">Own Your Progress.</span>
+          </h1>
+
+          <p class="text-slate-600 text-base font-normal leading-relaxed">
+            Transform your skincare journey with AI-powered analysis.<br />
+            Monitor skin clarity, hair density, and condition progress through
+            daily image tracking and personalized insights.
+          </p>
+
+          <div
+            class="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0 w-full"
+          >
+            <a
+              href="registration.html"
+              class="btn-scale inline-block text-center w-full sm:w-auto bg-green-600 text-white font-semibold text-sm rounded-md px-6 py-3 hover:bg-green-700 focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+            >
+              Start Your Journey
+            </a>
+            <a
+              href="#"
+              class="btn-scale inline-block text-center w-full sm:w-auto border border-green-600 text-green-600 font-semibold text-sm rounded-md px-6 py-3 hover:bg-green-50 focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+            >
+              Watch Demo
+            </a>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-6 gap-4 max-w-5xl mx-auto relative">
+          <!-- Big Image Left -->
+          <div class="col-span-4 row-span-2">
+            <img
+              src="https://thumbs.dreamstime.com/b/woman-natural-beauty-makeup-portrait-fashion-model-touching-face-hands-beautiful-girl-skin-care-treatment-woman-natural-140288618.jpg"
+              alt="Image 1"
+              class="w-full h-full object-cover rounded-xl shadow-lg"
+            />
+          </div>
+
+          <!-- Small Image Top Right -->
+          <div class="col-span-2 row-span-1">
+            <img
+              src="https://storage.googleapis.com/a1aa/image/3272a1f2-f94b-427c-5957-2410e722a662.jpg"
+              alt="Image 2"
+              class="w-full h-full object-cover rounded-xl shadow-lg"
+            />
+          </div>
+
+          <!-- Small Image Bottom Right -->
+          <div class="col-span-2 row-span-1">
+            <img
+              src="https://kehaskinclinic.com/wp-content/uploads/2023/03/female-doctor-holds-cream-and-brush-in-hands.jpg"
+              alt="Image 3"
+              class="w-full h-full object-cover rounded-xl shadow-lg"
+            />
+          </div>
+
+          <!-- Floating Camera Button -->
+          <button
+            class="absolute top-4 right-4 w-12 h-12 flex items-center justify-center rounded-full bg-green-100 hover:bg-green-200 shadow-lg transition duration-300"
+          >
+            <i class="fas fa-camera text-green-600 text-xl"></i>
+          </button>
+        </div>
+      </section>
+
+      <section
+        class="mt-20 max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-6 text-center"
+      >
+        <div
+          class="feature-card bg-white rounded-xl p-6 flex flex-col items-center space-y-3 shadow-sm cursor-pointer"
+        >
+          <i class="fas fa-camera text-green-600 text-3xl"></i>
+          <h3 class="font-semibold text-sm text-slate-900">Daily Tracking</h3>
+          <p class="text-xs text-slate-600 max-w-[140px]">
+            Simple photo uploads with AI-powered analysis
+          </p>
+        </div>
+        <div
+          class="feature-card bg-white rounded-xl p-6 flex flex-col items-center space-y-3 shadow-sm cursor-pointer"
+        >
+          <svg
+            class="w-7 h-7 text-green-600"
+            fill="none"
+            stroke="#059669"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <path d="M9 17l3-3 3 3" />
+            <path d="M12 12v8" />
+            <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <h3 class="font-semibold text-sm text-slate-900">
+            Progress Insights
+          </h3>
+          <p class="text-xs text-slate-600 max-w-[140px]">
+            Visual comparisons and detailed progress graphs
+          </p>
+        </div>
+        <div
+          class="feature-card bg-white rounded-xl p-6 flex flex-col items-center space-y-3 shadow-sm cursor-pointer"
+        >
+          <i class="fas fa-shield-alt text-purple-600 text-3xl"></i>
+          <h3 class="font-semibold text-sm text-slate-900">Privacy First</h3>
+          <p class="text-xs text-slate-600 max-w-[140px]">
+            Medical-grade security and complete data control
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer
+      class="w-full bg-[#0a1e3a] border-t border-gray-700 py-10 text-slate-300"
+    >
+      <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 px-6">
+        <div>
+          <div class="w-16 h-16 mb-4 rounded-full overflow-hidden">
+            <img
+              src="WhatsApp Image 2025-07-15 at 14.21.54_e1b4ade7.jpg"
+              class="h-full w-full object-cover"
+              alt="Dermastreak Logo"
+            />
+          </div>
+          <p class="text-sm leading-relaxed">
+            Dermastreak is your trusted AI-powered dermatology tracker — track
+            skin progress, get tips, and consult top dermatologists from the
+            comfort of your home.
+          </p>
+        </div>
+        <div>
+          <h3 class="text-white font-bold text-lg mb-4">Quick Links</h3>
+          <ul class="space-y-2 text-sm">
+            <li><a href="home.html" class="hover:underline">Home</a></li>
+            <li><a href="about.html" class="hover:underline">About Us</a></li>
+            <li>
+              <a href="services.html" class="hover:underline">Our Services</a>
+            </li>
+            <li>
+              <a href="blog.html" class="hover:underline">Skin Tips Blog</a>
+            </li>
+            <li><a href="contact.html" class="hover:underline">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-white font-bold text-lg mb-4">Contact Us</h3>
+          <p class="text-sm">📍 Tamil Nadu, India</p>
+          <p class="text-sm mt-2">📞 +91 98765 43210</p>
+          <p class="text-sm mt-2">✉️ support@dermastreak.com</p>
+          <p class="text-sm mt-2">Mon - Fri: 9 AM - 6 PM</p>
+        </div>
+        <div>
+          <h3 class="text-white font-bold text-lg mb-4">Legal & Social</h3>
+          <ul class="space-y-2 text-sm mb-4">
+            <li>
+              <a href="privacy.html" class="hover:underline">Privacy Policy</a>
+            </li>
+            <li>
+              <a href="terms.html" class="hover:underline"
+                >Terms & Conditions</a
+              >
+            </li>
+          </ul>
+          <div class="flex space-x-4">
+            <a href="#" class="hover:text-white"
+              ><i class="fab fa-facebook-f"></i
+            ></a>
+            <a href="#" class="hover:text-white"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a href="#" class="hover:text-white"
+              ><i class="fab fa-twitter"></i
+            ></a>
+            <a href="#" class="hover:text-white"
+              ><i class="fab fa-linkedin-in"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+      <div
+        class="border-t border-gray-700 mt-10 pt-6 text-center text-sm text-slate-400 px-6"
+      >
+        © 2025 Dermastreak. All rights reserved.
+      </div>
+    </footer>
+  </body>
+</html>
