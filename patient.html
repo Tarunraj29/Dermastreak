@@ -35,7 +35,11 @@
   <!-- Welcome Section -->
   <div class="bg-white p-8 rounded-xl shadow-lg flex flex-col md:flex-row items-center justify-between">
     <div class="space-y-3">
-      <h1 class="text-3xl font-extrabold text-slate-900">Welcome, <span class="text-green-600">Patient Name</span> 👋</h1>
+      <!-- <h1 class="text-3xl font-extrabold text-slate-900">Welcome, <span id="Welcome" class="text-green-600"></span> 👋</h1> -->
+       <h1 class="text-3xl font-extrabold text-slate-900">
+  welcome, <span id="welcome" class="text-green-600"></span> 👋
+</h1>
+
       <p class="text-slate-600">Stay consistent with your skincare. Monitor your progress and stay connected with your doctor.</p>
     </div>
     <img src="https://cdn-icons-png.flaticon.com/512/4208/4208396.png" class="w-36" alt="Dashboard Illustration">
@@ -49,7 +53,7 @@
       <i class="fas fa-upload text-green-600 text-4xl"></i>
       <h3 class="font-bold text-xl">Upload Daily Skin Image</h3>
       <p class="text-slate-600 text-sm">Keep your streak alive by uploading daily images for AI analysis.</p>
-      <a href="#" class="inline-block mt-2 px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700">Upload Now</a>
+      <a href="patientdetail/imageupload.html" class="inline-block mt-2 px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700">Upload Now</a>
     </div>
 
     <!-- AI Streak Analysis -->
@@ -99,6 +103,19 @@
 <footer class="bg-[#0a1e3a] text-slate-300 py-8 text-center text-sm border-t border-gray-700">
   <p>© 2025 Dermastreak. All rights reserved.</p>
 </footer>
+<script>
+const params = new URLSearchParams(window.location.search);
+const username = params.get('username');
 
+if (username) {
+  document.getElementById('welcome').innerText = username;
+}
+else {
+  document.getElementById('welcome').innerText = 'User';
+}
+
+
+    
+</script>
 </body>
 </html>
