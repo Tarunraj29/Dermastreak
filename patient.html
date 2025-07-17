@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -58,11 +58,9 @@
         class="bg-white p-8 rounded-xl shadow-lg flex flex-col md:flex-row items-center justify-between"
       >
         <div class="space-y-3">
-          <!-- <h1 class="text-3xl font-extrabold text-slate-900">Welcome, <span id="Welcome" class="text-green-600"></span> 👋</h1> -->
           <h1 class="text-3xl font-extrabold text-slate-900">
-            welcome, <span id="welcome" class="text-green-600"></span> 👋
+            Welcome, <span id="welcome" class="text-green-600"></span> 👋
           </h1>
-
           <p class="text-slate-600">
             Stay consistent with your skincare. Monitor your progress and stay
             connected with your doctor.
@@ -75,20 +73,6 @@
         />
       </div>
 
-<<<<<<< HEAD
-  <!-- Welcome Section -->
-  <div class="bg-white p-8 rounded-xl shadow-lg flex flex-col md:flex-row items-center justify-between">
-    <div class="space-y-3">
-      <!-- <h1 class="text-3xl font-extrabold text-slate-900">Welcome, <span id="Welcome" class="text-green-600"></span> 👋</h1> -->
-       <h1 class="text-3xl font-extrabold text-slate-900">
-  welcome, <span id="welcome" class="text-green-600"></span> 👋
-</h1>
-
-      <p class="text-slate-600">Stay consistent with your skincare. Monitor your progress and stay connected with your doctor.</p>
-    </div>
-    <img src="https://cdn-icons-png.flaticon.com/512/4208/4208396.png" class="w-36" alt="Dashboard Illustration">
-  </div>
-=======
       <!-- Dashboard Cards -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <!-- Daily Upload -->
@@ -106,7 +90,6 @@
             >Upload Now</a
           >
         </div>
->>>>>>> e0cac954aa7884f302b7e27cccb8537ca2e619d4
 
         <!-- AI Streak Analysis -->
         <div
@@ -124,15 +107,6 @@
           >
         </div>
 
-<<<<<<< HEAD
-    <!-- Daily Upload -->
-    <div class="dashboard-card bg-white p-6 rounded-xl shadow-md hover:shadow-xl cursor-pointer text-center space-y-4">
-      <i class="fas fa-upload text-green-600 text-4xl"></i>
-      <h3 class="font-bold text-xl">Upload Daily Skin Image</h3>
-      <p class="text-slate-600 text-sm">Keep your streak alive by uploading daily images for AI analysis.</p>
-      <a href="patientdetail/imageupload.html" class="inline-block mt-2 px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700">Upload Now</a>
-    </div>
-=======
         <!-- Doctor Suggestions -->
         <div
           class="dashboard-card bg-white p-6 rounded-xl shadow-md hover:shadow-xl cursor-pointer text-center space-y-4"
@@ -148,7 +122,6 @@
             >View Suggestions</a
           >
         </div>
->>>>>>> e0cac954aa7884f302b7e27cccb8537ca2e619d4
 
         <!-- Reminders -->
         <div
@@ -274,42 +247,11 @@
         © 2025 Dermastreak. All rights reserved.
       </div>
     </footer>
+
     <script>
       const params = new URLSearchParams(window.location.search);
       const username = params.get("username");
 
-<<<<<<< HEAD
-    <!-- Chat with Doctor -->
-    <div class="dashboard-card bg-white p-6 rounded-xl shadow-md hover:shadow-xl cursor-pointer text-center space-y-4">
-      <i class="fas fa-comments text-green-600 text-4xl"></i>
-      <h3 class="font-bold text-xl">Chat with Doctor</h3>
-      <p class="text-slate-600 text-sm">Quickly connect with your dermatologist for any queries.</p>
-      <a href="#" class="inline-block mt-2 px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700">Start Chat</a>
-    </div>
-
-  </div>
-</main>
-
-<!-- Footer -->
-<footer class="bg-[#0a1e3a] text-slate-300 py-8 text-center text-sm border-t border-gray-700">
-  <p>© 2025 Dermastreak. All rights reserved.</p>
-</footer>
-<script>
-const params = new URLSearchParams(window.location.search);
-const username = params.get('username');
-
-if (username) {
-  document.getElementById('welcome').innerText = username;
-}
-else {
-  document.getElementById('welcome').innerText = 'User';
-}
-
-
-    
-</script>
-</body>
-=======
       if (username) {
         document.getElementById("welcome").innerText = username;
       } else {
@@ -317,5 +259,4 @@ else {
       }
     </script>
   </body>
->>>>>>> e0cac954aa7884f302b7e27cccb8537ca2e619d4
 </html>
