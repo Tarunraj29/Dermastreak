@@ -6,7 +6,6 @@
     <title>Upload Your Skin Image - DermaStreak</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-      // Preview the selected image
       function previewImage(event) {
         const reader = new FileReader();
         reader.onload = function () {
@@ -16,40 +15,6 @@
         };
         reader.readAsDataURL(event.target.files[0]);
       }
-
-      // Handle form submission
-      function handleSubmit(event) {
-        event.preventDefault();
-
-        // Set upload flag in localStorage
-        localStorage.setItem("skinImageUploaded", "true");
-
-        // Redirect to success page
-        window.location.href = "success.html";
-      }
-
-      // Disable form if already uploaded
-      function checkIfAlreadyUploaded() {
-        const alreadyUploaded =
-          localStorage.getItem("skinImageUploaded") === "true";
-        if (alreadyUploaded) {
-          const form = document.getElementById("uploadForm");
-          const fileInput = document.getElementById("fileInput");
-          const submitBtn = document.getElementById("submitBtn");
-
-          fileInput.disabled = true;
-          submitBtn.disabled = true;
-          submitBtn.classList.add("bg-gray-400", "cursor-not-allowed");
-          submitBtn.classList.remove("bg-green-600", "hover:bg-green-700");
-
-          const msg = document.createElement("p");
-          msg.className = "text-center text-red-500 font-medium mt-4";
-          msg.innerText = "You have already uploaded today's image.";
-          form.appendChild(msg);
-        }
-      }
-
-      window.onload = checkIfAlreadyUploaded;
     </script>
   </head>
   <body class="bg-gray-50 min-h-screen flex items-center justify-center p-6">
@@ -62,8 +27,8 @@
       </p>
 
       <form
-        id="uploadForm"
-        onsubmit="handleSubmit(event)"
+        action="/upload"
+        method="POST"
         enctype="multipart/form-data"
         class="space-y-4"
       >
@@ -72,7 +37,6 @@
             >Select Image</label
           >
           <input
-            id="fileInput"
             type="file"
             name="skinImage"
             accept="image/*"
@@ -91,7 +55,6 @@
         </div>
 
         <button
-          id="submitBtn"
           type="submit"
           class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition duration-200"
         >
