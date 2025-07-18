@@ -93,7 +93,9 @@
             >Home</a
           >
           <a href="about.html" class="hover:text-green-600">About</a>
-         
+          <a href="services.html" class="hover:text-green-600">Services</a>
+          <a href="blog.html" class="hover:text-green-600">Blog</a>
+          <a href="contact.html" class="hover:text-green-600">Contact</a>
           <a
             href="login.html"
             class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-slate-700 bg-white hover:bg-gray-50 focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
@@ -228,20 +230,6 @@
       </section>
     </main>
 
-    <script>
-  // Show or hide buttons based on login status
-  if (localStorage.getItem('isLoggedIn') === 'true') {
-    document.getElementById('auth-buttons').classList.add('hidden');
-    document.getElementById('user-buttons').classList.remove('hidden');
-  }
-
-  function logout() {
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('userType');
-    window.location.reload();
-  }
-</script>
-
     <footer
       class="w-full bg-[#0a1e3a] border-t border-gray-700 py-10 text-slate-300"
     >
@@ -278,7 +266,7 @@
           <h3 class="text-white font-bold text-lg mb-4">Contact Us</h3>
           <p class="text-sm">📍 Tamil Nadu, India</p>
           <p class="text-sm mt-2">📞 +91 98765 43210</p>
-          <p class="text-sm mt-2">✉️ support@dermastreak.com</p>
+          <p class="text-sm mt-2">✉ support@dermastreak.com</p>
           <p class="text-sm mt-2">Mon - Fri: 9 AM - 6 PM</p>
         </div>
         <div>
@@ -316,4 +304,4 @@
       </div>
     </footer>
   </body>
-</html>     
+</html>
