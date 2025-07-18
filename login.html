@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -230,31 +230,27 @@
     </footer>
 
     <!-- Login Redirect Script -->
-    
     <script>
-  function handleLogin() {
-    const userType = document.getElementById('userType').value;
-    const username = document.getElementById('username').value.trim();
+      function handleLogin() {
+        const userType = document.getElementById("userType").value;
+        const username = document.getElementById("username").value.trim();
 
-    if (!userType) {
-      alert('Please select whether you are a Patient or Doctor.');
-      return;
-    }
+        if (!userType) {
+          alert("Please select whether you are a Patient or Doctor.");
+          return;
+        }
 
-    if (!username) {
-      alert('Please enter a username.');
-      return;
-    }
+        if (!username) {
+          alert("Please enter a username.");
+          return;
+        }
 
-    if (userType === 'patient') {
-      // Pass username as query param to patient.html
-      window.location.href = `patient.html?username=${encodeURIComponent(username)}`;
-    } else if (userType === 'doctor') {
-      // You could also pass username if needed
-      window.location.href = 'doctor_dashboard.html';
-    }
-  }
-</script>
-
+        if (userType === "patient") {
+          window.location.href = `patient.html?username=${encodeURIComponent(username)}`;
+        } else if (userType === "doctor") {
+          window.location.href = `doctordashboard.html?username=${encodeURIComponent(username)}`;
+        }
+      }
+    </script>
   </body>
 </html>
