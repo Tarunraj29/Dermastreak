@@ -2,84 +2,262 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Doctor Dashboard</title>
+    <title>Doctor Dashboard | Dermastreak</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .dashboard-card:hover {
+        transform: scale(1.03);
+        transition: transform 0.3s;
+      }
+    </style>
   </head>
 
-  <body class="bg-gray-50 text-gray-800 font-sans">
-    <!-- Top Bar -->
-    <header class="bg-white shadow p-4 flex items-center justify-between">
-      <h1 class="text-2xl font-bold text-blue-700">Welcome, Dr. Username</h1>
-      <img src="medicine.png" alt="Dashboard Icon" class="w-14 h-14" />
+  <body class="bg-[#f3f9ff] text-slate-900">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+      <div
+        class="max-w-7xl mx-auto px-4 flex justify-between items-center h-16"
+      >
+        <a href="doctordashboard.html" class="flex items-center space-x-3">
+          <img
+            src="WhatsApp Image 2025-07-15 at 14.21.54_e1b4ade7.jpg"
+            class="h-12 w-12 rounded-full"
+            alt="Dermastreak Logo"
+          />
+          <span class="font-extrabold text-slate-900 text-lg">Dermastreak</span>
+        </a>
+        <div class="flex space-x-4">
+          <a
+            href="profile.html"
+            class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-slate-700 bg-white hover:bg-gray-50 focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+            >My Profile</a
+          >
+          <a
+            href="home.html"
+            class="inline-flex btn-scale items-center px-4 py-2 border border-transparent text-sm font-semibold rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+            >Log Out</a
+          >
+        </div>
+      </div>
     </header>
 
-    <div class="flex">
-      <!-- Sidebar -->
-      <aside class="w-64 bg-white shadow h-screen p-5 space-y-6">
-        <nav>
-          <ul class="space-y-4 text-lg">
-            <li>
-              <a href="#" class="text-blue-600 hover:underline">Dashboard</a>
-            </li>
-            <li><a href="#" class="hover:text-blue-600">Appointments</a></li>
-            <li><a href="#" class="hover:text-blue-600">Messages</a></li>
-            <li><a href="#" class="hover:text-blue-600">Patients</a></li>
-            <li><a href="#" class="hover:text-blue-600">Profile</a></li>
-            <li><a href="#" class="text-red-600 hover:underline">Logout</a></li>
-          </ul>
-        </nav>
-      </aside>
+    <!-- Dashboard Main -->
+    <main class="max-w-7xl mx-auto px-4 py-12 space-y-10">
+      <!-- Welcome Section -->
+      <div
+        class="bg-white p-8 rounded-xl shadow-lg flex flex-col md:flex-row items-center justify-between"
+      >
+        <div class="space-y-3">
+          <h1 class="text-3xl font-extrabold text-slate-900">
+            Welcome, Dr. <span id="welcome" class="text-green-600"></span> 👋
+          </h1>
+          <p class="text-slate-600">
+            Stay organized and manage patient cases, appointments, and
+            prescriptions all in one place.
+          </p>
+        </div>
+        <img
+          src="medicine.png"
+          class="w-36"
+          alt="Doctor Dashboard Illustration"
+        />
+      </div>
 
-      <!-- Main Content -->
-      <main class="flex-1 p-8 space-y-8">
-        <section>
-          <h2 class="text-xl font-semibold text-gray-700 mb-4">
-            Recent Patient Submissions
-          </h2>
+      <!-- Doctor Dashboard Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Patient Cases -->
+        <div
+          class="dashboard-card bg-white p-6 rounded-xl shadow-md hover:shadow-xl text-center space-y-4"
+        >
+          <i class="fas fa-user-injured text-green-600 text-4xl"></i>
+          <h3 class="font-bold text-xl">Patient Cases</h3>
+          <p class="text-slate-600 text-sm">
+            Review, assign and manage your current patient cases.
+          </p>
+          <a
+            href="#"
+            class="inline-block mt-2 px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700"
+            >View Cases</a
+          >
+        </div>
 
-          <!-- Patient Cards -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Example Patient Card -->
-            <div class="bg-white rounded-xl shadow p-4">
-              <img
-                src="https://via.placeholder.com/300x200"
-                alt="Skin Condition"
-                class="rounded-lg mb-3"
-              />
-              <h3 class="text-lg font-bold">Patient: John Doe</h3>
-              <p class="text-sm text-gray-600">Submitted: 2 hours ago</p>
-              <button
-                class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-              >
-                View & Chat
-              </button>
-            </div>
+        <!-- Chat Center -->
+        <div
+          class="dashboard-card bg-white p-6 rounded-xl shadow-md hover:shadow-xl text-center space-y-4"
+        >
+          <i class="fas fa-comments text-green-600 text-4xl"></i>
+          <h3 class="font-bold text-xl">Chat Center</h3>
+          <p class="text-slate-600 text-sm">
+            Communicate with patients in real-time with secure messaging.
+          </p>
+          <a
+            href="#"
+            class="inline-block mt-2 px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700"
+            >Open Chat</a
+          >
+        </div>
 
-            <!-- Add more cards dynamically here -->
+        <!-- Appointments -->
+        <div
+          class="dashboard-card bg-white p-6 rounded-xl shadow-md hover:shadow-xl text-center space-y-4"
+        >
+          <i class="fas fa-calendar-check text-green-600 text-4xl"></i>
+          <h3 class="font-bold text-xl">Appointments</h3>
+          <p class="text-slate-600 text-sm">
+            Schedule or reschedule upcoming consultations.
+          </p>
+          <a
+            href="#"
+            class="inline-block mt-2 px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700"
+            >Manage</a
+          >
+        </div>
+
+        <!-- Prescriptions -->
+        <div
+          class="dashboard-card bg-white p-6 rounded-xl shadow-md hover:shadow-xl text-center space-y-4"
+        >
+          <i class="fas fa-pills text-green-600 text-4xl"></i>
+          <h3 class="font-bold text-xl">Prescriptions</h3>
+          <p class="text-slate-600 text-sm">
+            View, send, and manage prescriptions for your patients.
+          </p>
+          <a
+            href="#"
+            class="inline-block mt-2 px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700"
+            >Go to Rx</a
+          >
+        </div>
+
+        <!-- Patient Progress -->
+        <div
+          class="dashboard-card bg-white p-6 rounded-xl shadow-md hover:shadow-xl text-center space-y-4"
+        >
+          <i class="fas fa-chart-bar text-green-600 text-4xl"></i>
+          <h3 class="font-bold text-xl">Patient Progress</h3>
+          <p class="text-slate-600 text-sm">
+            Track patient improvement and clinical notes over time.
+          </p>
+          <a
+            href="#"
+            class="inline-block mt-2 px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700"
+            >Track Now</a
+          >
+        </div>
+
+        <!-- Analytics -->
+        <div
+          class="dashboard-card bg-white p-6 rounded-xl shadow-md hover:shadow-xl text-center space-y-4"
+        >
+          <i class="fas fa-file-medical-alt text-green-600 text-4xl"></i>
+          <h3 class="font-bold text-xl">Analytics</h3>
+          <p class="text-slate-600 text-sm">
+            Review reports, success metrics, and consultation trends.
+          </p>
+          <a
+            href="#"
+            class="inline-block mt-2 px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700"
+            >View Stats</a
+          >
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer (same as patient dashboard) -->
+    <footer
+      class="w-full bg-[#0a1e3a] border-t border-gray-700 py-10 text-slate-300"
+    >
+      <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 px-6">
+        <div>
+          <div class="w-16 h-16 mb-4 rounded-full overflow-hidden">
+            <img
+              src="WhatsApp Image 2025-07-15 at 14.21.54_e1b4ade7.jpg"
+              class="h-full w-full object-cover"
+              alt="Dermastreak Logo"
+            />
           </div>
-        </section>
-
-        <!-- Notifications / Status -->
-        <section>
-          <h2 class="text-xl font-semibold text-gray-700 mb-4">
-            Today’s Appointments
-          </h2>
-          <ul class="space-y-3">
-            <li
-              class="bg-white p-4 rounded shadow flex justify-between items-center"
-            >
-              <span>Jane Smith - 10:30 AM</span>
-              <button
-                class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
-              >
-                Start Consultation
-              </button>
+          <p class="text-sm leading-relaxed">
+            Dermastreak is your trusted AI-powered dermatology tracker — track
+            skin progress, get tips, and consult top dermatologists from the
+            comfort of your home.
+          </p>
+        </div>
+        <div>
+          <h3 class="text-white font-bold text-lg mb-4">Quick Links</h3>
+          <ul class="space-y-2 text-sm">
+            <li><a href="home.html" class="hover:underline">Home</a></li>
+            <li><a href="about.html" class="hover:underline">About Us</a></li>
+            <li>
+              <a href="services.html" class="hover:underline">Our Services</a>
             </li>
-            <!-- Add more appointments dynamically -->
+            <li>
+              <a href="blog.html" class="hover:underline">Skin Tips Blog</a>
+            </li>
+            <li><a href="contact.html" class="hover:underline">Contact</a></li>
           </ul>
-        </section>
-      </main>
-    </div>
+        </div>
+        <div>
+          <h3 class="text-white font-bold text-lg mb-4">Contact Us</h3>
+          <p class="text-sm">📍 Tamil Nadu, India</p>
+          <p class="text-sm mt-2">📞 +91 98765 43210</p>
+          <p class="text-sm mt-2">✉️ support@dermastreak.com</p>
+          <p class="text-sm mt-2">Mon - Fri: 9 AM - 6 PM</p>
+        </div>
+        <div>
+          <h3 class="text-white font-bold text-lg mb-4">Legal & Social</h3>
+          <ul class="space-y-2 text-sm mb-4">
+            <li>
+              <a href="privacy.html" class="hover:underline">Privacy Policy</a>
+            </li>
+            <li>
+              <a href="terms.html" class="hover:underline"
+                >Terms & Conditions</a
+              >
+            </li>
+          </ul>
+          <div class="flex space-x-4">
+            <a href="#" class="hover:text-white"
+              ><i class="fab fa-facebook-f"></i
+            ></a>
+            <a href="#" class="hover:text-white"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a href="#" class="hover:text-white"
+              ><i class="fab fa-twitter"></i
+            ></a>
+            <a href="#" class="hover:text-white"
+              ><i class="fab fa-linkedin-in"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+      <div
+        class="border-t border-gray-700 mt-10 pt-6 text-center text-sm text-slate-400 px-6"
+      >
+        © 2025 Dermastreak. All rights reserved.
+      </div>
+    </footer>
+
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const username = params.get("username");
+      if (username) {
+        document.getElementById("welcome").innerText = username;
+      } else {
+        document.getElementById("welcome").innerText = "User";
+      }
+    </script>
   </body>
 </html>
