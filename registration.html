@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -177,6 +177,21 @@
             />
           </div>
 
+          <!-- Role Selection -->
+          <div>
+            <label class="block text-sm font-medium text-slate-700">Role</label>
+            <select
+              name="role"
+              required
+              class="mt-1 block w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-green-500"
+            >
+              <option value="">Select Role</option>
+              <option value="doctor">Doctor</option>
+              <option value="patient">Patient</option>
+            </select>
+          </div>
+
+          <!-- Terms and Conditions -->
           <div class="flex items-center">
             <input
               type="checkbox"
@@ -191,6 +206,7 @@
             >
           </div>
 
+          <!-- Submit Button -->
           <button
             type="submit"
             class="w-full bg-green-600 text-white font-semibold py-3 rounded-md hover:bg-green-700 focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
