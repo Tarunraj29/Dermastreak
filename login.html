@@ -32,26 +32,20 @@
   <body class="bg-[#f3f9ff] text-slate-900">
     <!-- Header -->
     <header class="bg-white shadow">
-      <nav
-        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16"
-      >
+      <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
         <a href="home.html" class="flex items-center space-x-3">
-          <img
-            src="WhatsApp Image 2025-07-15 at 14.21.54_e1b4ade7.jpg"
-            class="h-12 w-12 rounded-full"
-            alt="Dermastreak Logo"
-          />
+          <img src="WhatsApp Image 2025-07-15 at 14.21.54_e1b4ade7.jpg" class="h-12 w-12 rounded-full" alt="Dermastreak Logo" />
           <span class="font-extrabold text-slate-900 text-lg">Dermastreak</span>
         </a>
         <div class="hidden md:flex items-center space-x-4 text-sm font-normal">
           <a href="home.html" class="hover:text-green-600">Home</a>
           <a href="about.html" class="hover:text-green-600">About</a>
-          
           <a
             href="registration.html"
             class="inline-flex btn-scale items-center px-4 py-2 border border-transparent text-sm font-semibold rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-            >Sign Up</a
           >
+            Sign Up
+          </a>
         </div>
       </nav>
     </header>
@@ -63,61 +57,64 @@
           Login to Your Account
         </h1>
         <p class="text-center text-slate-600">Welcome back to Dermastreak!</p>
-        <form class="space-y-5">
+        <form id="loginForm" class="space-y-5" onsubmit="validateLogin(event)">
           <div>
-            <label class="block text-sm font-medium text-slate-700"
-              >User Name</label
-            >
+            <label class="block text-sm font-medium text-slate-700">
+              User Name <span class="text-red-600">*</span>
+            </label>
             <input
               id="username"
               type="text"
               name="username"
-              required
               placeholder="Enter your username"
-              class="mt-1 block w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-green-500"
+              class="mt-1 block w-full px-4 py-2 border rounded-md"
             />
+            <p class="text-red-600 text-sm hidden mt-1" id="username-error">Username is required.</p>
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-slate-700"
-              >Email Address</label
-            >
+            <label class="block text-sm font-medium text-slate-700">
+              Email Address <span class="text-red-600">*</span>
+            </label>
             <input
+              id="email"
               type="email"
               name="email"
-              required
               placeholder="you@example.com"
-              class="mt-1 block w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-green-500"
+              class="mt-1 block w-full px-4 py-2 border rounded-md"
             />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-slate-700"
-              >Password</label
-            >
-            <input
-              type="password"
-              name="password"
-              required
-              placeholder="********"
-              class="mt-1 block w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-green-500"
-            />
+            <p class="text-red-600 text-sm hidden mt-1" id="email-error">Email is required.</p>
           </div>
 
-          <!-- Added User Type Selection -->
           <div>
-            <label class="block text-sm font-medium text-slate-700"
-              >I am a:</label
-            >
+            <label class="block text-sm font-medium text-slate-700">
+              Password <span class="text-red-600">*</span>
+            </label>
+            <input
+              id="password"
+              type="password"
+              name="password"
+              placeholder="********"
+              class="mt-1 block w-full px-4 py-2 border rounded-md"
+            />
+            <p class="text-red-600 text-sm hidden mt-1" id="password-error">Password is required.</p>
+          </div>
+
+          <!-- User Type -->
+          <div>
+            <label class="block text-sm font-medium text-slate-700">
+              I am a: <span class="text-red-600">*</span>
+            </label>
             <select
               id="userType"
               name="userType"
-              required
-              class="mt-1 block w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-green-500"
+              class="mt-1 block w-full px-4 py-2 border rounded-md"
             >
               <option value="" disabled selected>Select your role</option>
               <option value="patient">Patient</option>
               <option value="doctor">Doctor</option>
             </select>
+            <p class="text-red-600 text-sm hidden mt-1" id="userType-error">Please select a role.</p>
           </div>
 
           <div class="flex items-center justify-between">
@@ -127,17 +124,13 @@
                 name="remember"
                 class="h-4 w-4 text-green-600 rounded border-gray-300 focus:ring-green-500"
               />
-              <label class="ml-2 block text-sm text-slate-700"
-                >Remember me</label
-              >
+              <label class="ml-2 block text-sm text-slate-700">Remember me</label>
             </div>
-            <a href="#" class="text-sm text-green-600 hover:underline"
-              >Forgot Password?</a
-            >
+            <a href="#" class="text-sm text-green-600 hover:underline">Forgot Password?</a>
           </div>
+
           <button
-            type="button"
-            onclick="handleLogin()"
+            type="submit"
             class="w-full bg-green-600 text-white font-semibold py-3 rounded-md hover:bg-green-700 focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
           >
             Login
@@ -145,17 +138,13 @@
         </form>
         <p class="text-center text-sm text-slate-600">
           Don't have an account?
-          <a href="registration.html" class="text-green-600 hover:underline"
-            >Sign Up</a
-          >
+          <a href="registration.html" class="text-green-600 hover:underline">Sign Up</a>
         </p>
       </div>
     </main>
 
     <!-- Footer -->
-    <footer
-      class="w-full bg-[#0a1e3a] border-t border-gray-700 py-10 text-slate-300"
-    >
+    <footer class="w-full bg-[#0a1e3a] border-t border-gray-700 py-10 text-slate-300">
       <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 px-6">
         <div>
           <div class="w-16 h-16 mb-4 rounded-full overflow-hidden">
@@ -176,12 +165,8 @@
           <ul class="space-y-2 text-sm">
             <li><a href="home.html" class="hover:underline">Home</a></li>
             <li><a href="about.html" class="hover:underline">About Us</a></li>
-            <li>
-              <a href="services.html" class="hover:underline">Our Services</a>
-            </li>
-            <li>
-              <a href="blog.html" class="hover:underline">Skin Tips Blog</a>
-            </li>
+            <li><a href="services.html" class="hover:underline">Our Services</a></li>
+            <li><a href="blog.html" class="hover:underline">Skin Tips Blog</a></li>
             <li><a href="contact.html" class="hover:underline">Contact</a></li>
           </ul>
         </div>
@@ -195,58 +180,74 @@
         <div>
           <h3 class="text-white font-bold text-lg mb-4">Legal & Social</h3>
           <ul class="space-y-2 text-sm mb-4">
-            <li>
-              <a href="privacy.html" class="hover:underline">Privacy Policy</a>
-            </li>
-            <li>
-              <a href="terms.html" class="hover:underline"
-                >Terms & Conditions</a
-              >
-            </li>
+            <li><a href="privacy.html" class="hover:underline">Privacy Policy</a></li>
+            <li><a href="terms.html" class="hover:underline">Terms & Conditions</a></li>
           </ul>
           <div class="flex space-x-4">
-            <a href="#" class="hover:text-white"
-              ><i class="fab fa-facebook-f"></i
-            ></a>
-            <a href="#" class="hover:text-white"
-              ><i class="fab fa-instagram"></i
-            ></a>
-            <a href="#" class="hover:text-white"
-              ><i class="fab fa-twitter"></i
-            ></a>
-            <a href="#" class="hover:text-white"
-              ><i class="fab fa-linkedin-in"></i
-            ></a>
+            <a href="#" class="hover:text-white"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="hover:text-white"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="hover:text-white"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="hover:text-white"><i class="fab fa-linkedin-in"></i></a>
           </div>
         </div>
       </div>
-      <div
-        class="border-t border-gray-700 mt-10 pt-6 text-center text-sm text-slate-400 px-6"
-      >
+      <div class="border-t border-gray-700 mt-10 pt-6 text-center text-sm text-slate-400 px-6">
         © 2025 Dermastreak. All rights reserved.
       </div>
     </footer>
 
-    <!-- Login Redirect Script -->
+    <!-- Validation Script -->
     <script>
-      function handleLogin() {
-        const userType = document.getElementById("userType").value;
-        const username = document.getElementById("username").value.trim();
+      function validateLogin(event) {
+        event.preventDefault();
 
-        if (!userType) {
-          alert("Please select whether you are a Patient or Doctor.");
-          return;
+        const username = document.getElementById("username");
+        const email = document.getElementById("email");
+        const password = document.getElementById("password");
+        const userType = document.getElementById("userType");
+
+        let valid = true;
+
+        // Reset styles
+        [username, email, password, userType].forEach((input) => {
+          input.classList.remove("border-red-500");
+        });
+        document.querySelectorAll("p[id$='-error']").forEach((el) => el.classList.add("hidden"));
+
+        // Username
+        if (!username.value.trim()) {
+          username.classList.add("border-red-500");
+          document.getElementById("username-error").classList.remove("hidden");
+          valid = false;
         }
 
-        if (!username) {
-          alert("Please enter a username.");
-          return;
+        // Email
+        if (!email.value.trim()) {
+          email.classList.add("border-red-500");
+          document.getElementById("email-error").classList.remove("hidden");
+          valid = false;
         }
 
-        if (userType === "patient") {
-          window.location.href = `patient.html?username=${encodeURIComponent(username)}`;
-        } else if (userType === "doctor") {
-          window.location.href = `doctordashboard.html?username=${encodeURIComponent(username)}`;
+        // Password
+        if (!password.value.trim()) {
+          password.classList.add("border-red-500");
+          document.getElementById("password-error").classList.remove("hidden");
+          valid = false;
+        }
+
+        // User type
+        if (!userType.value) {
+          userType.classList.add("border-red-500");
+          document.getElementById("userType-error").classList.remove("hidden");
+          valid = false;
+        }
+
+        if (valid) {
+          if (userType.value === "patient") {
+            window.location.href = `patient.html?username=${encodeURIComponent(username.value)}`;
+          } else if (userType.value === "doctor") {
+            window.location.href = `doctordashboard.html?username=${encodeURIComponent(username.value)}`;
+          }
         }
       }
     </script>
