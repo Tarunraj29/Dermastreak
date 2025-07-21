@@ -22,6 +22,15 @@
 <div id="ai-streak-container" style="position: fixed; top: 10px; right: 10px; background: linear-gradient(to right, #7AD7F0, #4CAF50); color: white; padding: 12px 24px; border-radius: 50px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); font-size: 16px; font-weight: bold; z-index: 999;">
   🔥 AI Streak: <span id="streak-count">0</span> days
 </div>
+<!-- Image Upload Section -->
+<div style="margin-top: 100px; text-align: center;">
+  <input type="file" id="imageInput" accept="image/*" style="margin-bottom: 10px;">
+  <div id="previewContainer" style="display:none;">
+    <img id="previewImage" src="" style="max-width: 200px; max-height: 200px; border-radius: 12px; margin-top: 10px;" />
+    <br>
+    <button onclick="removeImage()" style="margin-top: 10px; padding: 8px 16px; border: none; background-color: #e74c3c; color: white; border-radius: 8px;">❌ Remove</button>
+  </div>
+</div>
 
   <div class="bg-white rounded-2xl shadow-xl p-8 max-w-lg w-full space-y-6">
     <h2 class="text-3xl font-bold text-center text-green-600">Upload Your Skin Image</h2>
@@ -52,5 +61,53 @@
       </button>
     </form>
   </div>
+  <script>
+  let streak = parseInt(localStorage.getItem("aiStreak")) || 0;
+  let lastUploaded = localStorage.getItem("lastUpload");
+
+  document.getElementById("streak-count").textContent = streak;
+
+  const imageInput = document.getElementById("imageInput");
+  const previewContainer = document.getElementById("previewContainer");
+  const previewImage = document.getElementById("previewImage");
+
+  imageInput.addEventListener("change", function () {
+    const file = this.files[0];
+    if (!file) return;
+
+    const today = new Date().toISOString().split("T")[0];
+
+    // Only increase streak if lastUpload was on a different day
+    if (lastUploaded !== today) {
+      streak++;
+      localStorage.setItem("aiStreak", streak);
+      localStorage.setItem("lastUpload", today);
+      document.getElementById("streak-count").textContent = streak;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      previewImage.src = e.target.result;
+      previewContainer.style.display = "block";
+    };
+    reader.readAsDataURL(file);
+  });
+
+  function removeImage() {
+    previewImage.src = "";
+    previewContainer.style.display = "none";
+    imageInput.value = "";
+
+    // Revert streak if user removes today's upload
+    const today = new Date().toISOString().split("T")[0];
+    if (lastUploaded === today) {
+      streak = Math.max(0, streak - 1);
+      localStorage.setItem("aiStreak", streak);
+      localStorage.removeItem("lastUpload");
+      document.getElementById("streak-count").textContent = streak;
+    }
+  }
+</script>
+
 </body>
 </html>
