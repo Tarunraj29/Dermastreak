@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Patient Dashboard | Dermastreak</title>
+    <title>Doctor Dashboard | Dermastreak</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link
@@ -26,25 +26,19 @@
 
   <body class="bg-[#f3f9ff] text-slate-900">
     <!-- Header -->
-    <header class="bg-white shadow">
-      <nav
-        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16"
+    <header class="bg-white shadow-sm border-b border-gray-200">
+      <div
+        class="max-w-7xl mx-auto px-4 flex justify-between items-center h-16"
       >
-        <a href="patient.html" class="flex items-center space-x-3">
+        <a href="doctordashboard.html" class="flex items-center space-x-3">
           <img
             src="WhatsApp Image 2025-07-15 at 14.21.54_e1b4ade7.jpg"
             class="h-12 w-12 rounded-full"
             alt="Dermastreak Logo"
           />
-
           <span class="font-extrabold text-slate-900 text-lg">Dermastreak</span>
         </a>
-        <div class="hidden md:flex items-center space-x-4 text-sm font-normal">
-          <a href="patient.html" class="hover:text-green-600 text-green-500"
-            >Home</a
-          >
-          <a href="about2.html" class="hover:text-green-600">About</a>
-         
+        <div class="flex space-x-4">
           <a
             href="profile.html"
             class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-slate-700 bg-white hover:bg-gray-50 focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
@@ -56,7 +50,7 @@
             >Log Out</a
           >
         </div>
-      </nav>
+      </div>
     </header>
 
     <!-- Dashboard Main -->
@@ -67,131 +61,121 @@
       >
         <div class="space-y-3">
           <h1 class="text-3xl font-extrabold text-slate-900">
-            Welcome, <span id="welcome" class="text-green-600"></span> 👋
+            Welcome, Dr. <span id="welcome" class="text-green-600"></span> 👋
           </h1>
           <p class="text-slate-600">
-            Stay consistent with your skincare. Monitor your progress and stay
-            connected with your doctor.
+            Stay organized and manage patient cases, appointments, and
+            prescriptions all in one place.
           </p>
         </div>
         <img
-          src="https://cdn-icons-png.flaticon.com/512/4208/4208396.png"
+          src="medicine.png"
           class="w-36"
-          alt="Dashboard Illustration"
+          alt="Doctor Dashboard Illustration"
         />
       </div>
 
-<<<<<<< HEAD
-  <!-- Welcome Section -->
-  <div class="bg-white p-8 rounded-xl shadow-lg flex flex-col md:flex-row items-center justify-between">
-    <div class="space-y-3">
-      <!-- <h1 class="text-3xl font-extrabold text-slate-900">Welcome, <span id="Welcome" class="text-green-600"></span> 👋</h1> -->
-       <h1 class="text-3xl font-extrabold text-slate-900">
-  WELCOME, <span id="welcome" class="text-green-600"></span> 👋
-</h1>
-=======
-      <!-- Dashboard Cards -->
+      <!-- Doctor Dashboard Cards -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <!-- Daily Upload -->
+        <!-- Patient Cases -->
         <div
-          class="dashboard-card bg-white p-6 rounded-xl shadow-md hover:shadow-xl cursor-pointer text-center space-y-4"
+          class="dashboard-card bg-white p-6 rounded-xl shadow-md hover:shadow-xl text-center space-y-4"
         >
-          <i class="fas fa-upload text-green-600 text-4xl"></i>
-          <h3 class="font-bold text-xl">Upload Daily Skin Image</h3>
+          <i class="fas fa-user-injured text-green-600 text-4xl"></i>
+          <h3 class="font-bold text-xl">Patient Cases</h3>
           <p class="text-slate-600 text-sm">
-            Keep your streak alive by uploading daily images for AI analysis.
-          </p>
-          <a
-            href="patientdetail/imageupload.html"
-            class="inline-block mt-2 px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700"
-            >Upload Now</a
-          >
-        </div>
->>>>>>> e0cac954aa7884f302b7e27cccb8537ca2e619d4
-
-        <!-- AI Streak Analysis -->
-        <div
-          class="dashboard-card bg-white p-6 rounded-xl shadow-md hover:shadow-xl cursor-pointer text-center space-y-4"
-        >
-          <i class="fas fa-chart-line text-green-600 text-4xl"></i>
-          <h3 class="font-bold text-xl">AI Streak Analysis</h3>
-          <p class="text-slate-600 text-sm">
-            View your daily progress with visual AI streak reports.
+            Review, assign and manage your current patient cases.
           </p>
           <a
             href="#"
             class="inline-block mt-2 px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700"
-            >View Progress</a
+            >View Cases</a
           >
         </div>
 
-        <!-- Doctor Suggestions -->
+        <!-- Chat Center -->
         <div
-          class="dashboard-card bg-white p-6 rounded-xl shadow-md hover:shadow-xl cursor-pointer text-center space-y-4"
-        >
-          <i class="fas fa-notes-medical text-green-600 text-4xl"></i>
-          <h3 class="font-bold text-xl">Doctor Suggestions</h3>
-          <p class="text-slate-600 text-sm">
-            Get professional advice based on your progress and uploads.
-          </p>
-          <a
-            href="#"
-            class="inline-block mt-2 px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700"
-            >View Suggestions</a
-          >
-        </div>
-
-        <!-- Reminders -->
-        <div
-          class="dashboard-card bg-white p-6 rounded-xl shadow-md hover:shadow-xl cursor-pointer text-center space-y-4"
-        >
-          <i class="fas fa-bell text-green-600 text-4xl"></i>
-          <h3 class="font-bold text-xl">Set Reminders</h3>
-          <p class="text-slate-600 text-sm">
-            Never miss a dose or photo upload. Schedule custom reminders.
-          </p>
-          <a
-            href="#"
-            class="inline-block mt-2 px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700"
-            >Set Reminder</a
-          >
-        </div>
-
-        <!-- Product Rating -->
-        <div
-          class="dashboard-card bg-white p-6 rounded-xl shadow-md hover:shadow-xl cursor-pointer text-center space-y-4"
-        >
-          <i class="fas fa-star text-green-600 text-4xl"></i>
-          <h3 class="font-bold text-xl">Rate Products</h3>
-          <p class="text-slate-600 text-sm">
-            Help others by rating skincare products after usage.
-          </p>
-          <a
-            href="#"
-            class="inline-block mt-2 px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700"
-            >Rate Now</a
-          >
-        </div>
-
-        <!-- Chat with Doctor -->
-        <div
-          class="dashboard-card bg-white p-6 rounded-xl shadow-md hover:shadow-xl cursor-pointer text-center space-y-4"
+          class="dashboard-card bg-white p-6 rounded-xl shadow-md hover:shadow-xl text-center space-y-4"
         >
           <i class="fas fa-comments text-green-600 text-4xl"></i>
-          <h3 class="font-bold text-xl">Chat with Doctor</h3>
+          <h3 class="font-bold text-xl">Chat Center</h3>
           <p class="text-slate-600 text-sm">
-            Quickly connect with your dermatologist for any queries.
+            Communicate with patients in real-time with secure messaging.
           </p>
           <a
             href="#"
             class="inline-block mt-2 px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700"
-            >Start Chat</a
+            >Open Chat</a
+          >
+        </div>
+
+        <!-- Appointments -->
+        <div
+          class="dashboard-card bg-white p-6 rounded-xl shadow-md hover:shadow-xl text-center space-y-4"
+        >
+          <i class="fas fa-calendar-check text-green-600 text-4xl"></i>
+          <h3 class="font-bold text-xl">Appointments</h3>
+          <p class="text-slate-600 text-sm">
+            Schedule or reschedule upcoming consultations.
+          </p>
+          <a
+            href="#"
+            class="inline-block mt-2 px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700"
+            >Manage</a
+          >
+        </div>
+
+        <!-- Prescriptions -->
+        <div
+          class="dashboard-card bg-white p-6 rounded-xl shadow-md hover:shadow-xl text-center space-y-4"
+        >
+          <i class="fas fa-pills text-green-600 text-4xl"></i>
+          <h3 class="font-bold text-xl">Prescriptions</h3>
+          <p class="text-slate-600 text-sm">
+            View, send, and manage prescriptions for your patients.
+          </p>
+          <a
+            href="#"
+            class="inline-block mt-2 px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700"
+            >Go to Rx</a
+          >
+        </div>
+
+        <!-- Patient Progress -->
+        <div
+          class="dashboard-card bg-white p-6 rounded-xl shadow-md hover:shadow-xl text-center space-y-4"
+        >
+          <i class="fas fa-chart-bar text-green-600 text-4xl"></i>
+          <h3 class="font-bold text-xl">Patient Progress</h3>
+          <p class="text-slate-600 text-sm">
+            Track patient improvement and clinical notes over time.
+          </p>
+          <a
+            href="#"
+            class="inline-block mt-2 px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700"
+            >Track Now</a
+          >
+        </div>
+
+        <!-- Analytics -->
+        <div
+          class="dashboard-card bg-white p-6 rounded-xl shadow-md hover:shadow-xl text-center space-y-4"
+        >
+          <i class="fas fa-file-medical-alt text-green-600 text-4xl"></i>
+          <h3 class="font-bold text-xl">Analytics</h3>
+          <p class="text-slate-600 text-sm">
+            Review reports, success metrics, and consultation trends.
+          </p>
+          <a
+            href="#"
+            class="inline-block mt-2 px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700"
+            >View Stats</a
           >
         </div>
       </div>
     </main>
 
-    <!-- Footer -->
+    <!-- Footer (same as patient dashboard) -->
     <footer
       class="w-full bg-[#0a1e3a] border-t border-gray-700 py-10 text-slate-300"
     >
@@ -213,10 +197,14 @@
         <div>
           <h3 class="text-white font-bold text-lg mb-4">Quick Links</h3>
           <ul class="space-y-2 text-sm">
-            <li><a href="patient.html" class="hover:underline">Home</a></li>
+            <li><a href="home.html" class="hover:underline">Home</a></li>
             <li><a href="about.html" class="hover:underline">About Us</a></li>
-            <li><a href="services.html" class="hover:underline">Our Services</a></li>
-            <li><a href="blog.html" class="hover:underline">Skin Tips Blog</a></li>
+            <li>
+              <a href="services.html" class="hover:underline">Our Services</a>
+            </li>
+            <li>
+              <a href="blog.html" class="hover:underline">Skin Tips Blog</a>
+            </li>
             <li><a href="contact.html" class="hover:underline">Contact</a></li>
           </ul>
         </div>
@@ -230,23 +218,38 @@
         <div>
           <h3 class="text-white font-bold text-lg mb-4">Legal & Social</h3>
           <ul class="space-y-2 text-sm mb-4">
-            <li><a href="privacy.html" class="hover:underline">Privacy Policy</a></li>
-            <li><a href="terms.html" class="hover:underline">Terms & Conditions</a></li>
+            <li>
+              <a href="privacy.html" class="hover:underline">Privacy Policy</a>
+            </li>
+            <li>
+              <a href="terms.html" class="hover:underline"
+                >Terms & Conditions</a
+              >
+            </li>
           </ul>
           <div class="flex space-x-4">
-            <a href="#" class="hover:text-white"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" class="hover:text-white"><i class="fab fa-instagram"></i></a>
-            <a href="#" class="hover:text-white"><i class="fab fa-twitter"></i></a>
-            <a href="#" class="hover:text-white"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="hover:text-white"
+              ><i class="fab fa-facebook-f"></i
+            ></a>
+            <a href="#" class="hover:text-white"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a href="#" class="hover:text-white"
+              ><i class="fab fa-twitter"></i
+            ></a>
+            <a href="#" class="hover:text-white"
+              ><i class="fab fa-linkedin-in"></i
+            ></a>
           </div>
         </div>
       </div>
-      <div class="border-t border-gray-700 mt-10 pt-6 text-center text-sm text-slate-400 px-6">
+      <div
+        class="border-t border-gray-700 mt-10 pt-6 text-center text-sm text-slate-400 px-6"
+      >
         © 2025 Dermastreak. All rights reserved.
       </div>
     </footer>
 
-    <!-- Username Script -->
     <script>
       const params = new URLSearchParams(window.location.search);
       const username = params.get("username");
