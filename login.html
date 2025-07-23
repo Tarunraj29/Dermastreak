@@ -195,7 +195,7 @@
     </footer>
 
     <!-- Validation Script -->
-    <script>
+    <!-- <script>
       function validateLogin(event) {
         event.preventDefault();
 
@@ -248,6 +248,35 @@
           }
         }
       }
-    </script>
+    </script> -->
+
+    <script>
+async function validateLogin(event) {
+  event.preventDefault();
+
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  const userType = document.getElementById("userType").value;
+
+  const res = await fetch("/api/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password, userType })
+  });
+
+  const data = await res.json();
+  if (res.ok) {
+    alert("Login successful!");
+    if (userType === "patient") {
+      window.location.href = `patient.html?username=${encodeURIComponent(data.username)}`;
+    } else {
+      window.location.href = `doctordashboard.html?username=${encodeURIComponent(data.username)}`;
+    }
+  } else {
+    alert(data.error || "Login failed");
+  }
+}
+</script>
+
   </body>
 </html>

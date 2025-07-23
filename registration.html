@@ -561,5 +561,38 @@
         © 2025 Dermastreak. All rights reserved.
       </div>
     </footer>
+<!-- backend -->
+<script>
+async function handleRegister(event) {
+  event.preventDefault();
+
+  const role = document.getElementById("role").value;
+  const fullName = document.querySelector('input[placeholder="Enter your full name"]').value;
+  const email = document.querySelector('input[type="email"]').value;
+  const password = document.querySelector('input[placeholder="Enter your password"]').value;
+  const age = document.querySelector('input[type="number"]').value;
+  const phone = document.querySelector('input[type="tel"]').value;
+  const gender = document.querySelector('select').value;
+
+  const res = await fetch("/api/register", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ role, fullName, email, password, age, phone, gender })
+  });
+
+  const data = await res.json();
+  if (res.ok) {
+    alert("Registration successful!");
+    window.location.href = "login.html";
+  } else {
+    alert(data.error || "Something went wrong");
+  }
+}
+document.querySelector("form").addEventListener("submit", handleRegister);
+</script>
+
+<!--backend close here-->
+
+
  </body>
 </html>
