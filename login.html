@@ -61,9 +61,9 @@
               User Name <span class="text-red-600">*</span>
             </label>
             <input
-              id="username"
+              id="name"
               type="text"
-              name="username"
+              name="name"
               placeholder="Enter your username"
               class="mt-1 block w-full px-4 py-2 border rounded-md"
             />
@@ -120,12 +120,15 @@
               <input
                 type="checkbox"
                 name="remember"
+                id="rememberMe"
                 class="h-4 w-4 text-green-600 rounded border-gray-300 focus:ring-green-500"
               />
               <label class="ml-2 block text-sm text-slate-700">Remember me</label>
             </div>
             <a href="#" class="text-sm text-green-600 hover:underline">Forgot Password?</a>
           </div>
+          <!-- Response Message -->
+<p id="loginResponse" class="text-center text-red-600 font-medium"></p>
 
           <button
             type="submit"
@@ -195,88 +198,48 @@
     </footer>
 
     <!-- Validation Script -->
-    <script>
-      function validateLogin(event) {
-        event.preventDefault();
+  <script>
+  async function validateLogin(event) {
+    event.preventDefault();
 
-        const username = document.getElementById("username");
-        const email = document.getElementById("email");
-        const password = document.getElementById("password");
-        const userType = document.getElementById("userType");
+    // Clear any previous message
+    document.getElementById("loginResponse").innerText = "";
 
-        let valid = true;
+    const username = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    const userType = document.getElementById("userType").value;
+    const rememberMe = document.getElementById("rememberMe").checked; // ✅ Get rememberMe value
 
-        // Reset styles
-        [username, email, password, userType].forEach((input) => {
-          input.classList.remove("border-red-500");
-        });
-        document.querySelectorAll("p[id$='-error']").forEach((el) => el.classList.add("hidden"));
-
-        // Username
-        if (!username.value.trim()) {
-          username.classList.add("border-red-500");
-          document.getElementById("username-error").classList.remove("hidden");
-          valid = false;
-        }
-
-        // Email
-        if (!email.value.trim()) {
-          email.classList.add("border-red-500");
-          document.getElementById("email-error").classList.remove("hidden");
-          valid = false;
-        }
-
-        // Password
-        if (!password.value.trim()) {
-          password.classList.add("border-red-500");
-          document.getElementById("password-error").classList.remove("hidden");
-          valid = false;
-        }
-
-        // User type
-        if (!userType.value) {
-          userType.classList.add("border-red-500");
-          document.getElementById("userType-error").classList.remove("hidden");
-          valid = false;
-        }
-
-        if (valid) {
-          if (userType.value === "patient") {
-            window.location.href = `patient.html?username=${encodeURIComponent(username.value)}`;
-          } else if (userType.value === "doctor") {
-            window.location.href = `doctordashboard.html?username=${encodeURIComponent(username.value)}`;
-          }
-        }
-      }
-    </script> 
-
-    <!-- <script>
-async function validateLogin(event) {
-  event.preventDefault();
-
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-  const userType = document.getElementById("userType").value;
-
-  const res = await fetch("/api/login", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password, userType })
-  });
-
-  const data = await res.json();
-  if (res.ok) {
-    alert("Login successful!");
-    if (userType === "patient") {
-      window.location.href = `patient.html?username=${encodeURIComponent(data.username)}`;
-    } else {
-      window.location.href = `doctordashboard.html?username=${encodeURIComponent(data.username)}`;
-    }
-  } else {
-    alert(data.error || "Login failed");
-  }
+    if (!username || !email || !password || !userType) {
+  document.getElementById("loginResponse").innerText = "Please fill in all required fields.";
+  return;
 }
-</script> -->
 
+    try {
+      const response = await fetch("http://localhost:5000/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password, role: userType, rememberMe ,name:username}),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text(); // capture HTML/text error
+        throw new Error(errorText);
+      }
+
+      const data = await response.json();
+      console.log("✅ Login success:", data);
+      document.getElementById("loginResponse").innerText = "Login successful!";
+
+      // You can redirect if you want:
+      // window.location.href = "/dashboard.html";
+
+    } catch (error) {
+      console.error("❌ Login error:", error.message);
+      document.getElementById("loginResponse").innerText = "Login failed: " + error.message;
+    }
+  }
+</script>
   </body>
 </html>
