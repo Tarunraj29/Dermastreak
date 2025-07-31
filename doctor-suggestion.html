@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Doctor Suggestions | Dermastreak</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script type="module">
+    // Firebase SDKs
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+
+   const firebaseConfig = {
+  apiKey: "AIzaSyBoScNEhiFNdljF9D_BK8aBGuJiJ9XpX8o",
+  authDomain: "dermastreak-2caae.firebaseapp.com",
+  projectId: "dermastreak-2caae",
+  storageBucket: "dermastreak-2caae.firebasestorage.app",
+  messagingSenderId: "32726012100",
+  appId: "1:32726012100:web:b5a2071c3ecea58810b991",
+  measurementId: "G-X99ZRRHM4Z"
+};
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function fetchDoctors() {
+      const doctorsRef = collection(db, "users");
+      const q = query(doctorsRef, where("role", "==", "doctor"));
+      const querySnapshot = await getDocs(q);
+
+      const doctorList = document.getElementById("doctor-list");
+      doctorList.innerHTML = "";
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const doctorCard = document.createElement("div");
+        doctorCard.className = "flex items-center p-4 bg-white rounded-lg shadow-md space-x-4 hover:bg-gray-100 cursor-pointer";
+        doctorCard.innerHTML = `
+          <img src="${data.profilePicture}" alt="Profile" class="w-16 h-16 rounded-full object-cover">
+          <div>
+            <h3 class="text-lg font-semibold">${data.fullName}</h3>
+            <p class="text-sm text-gray-600">${data.email}</p>
+            <p class="text-sm text-gray-600">📞 ${data.phone}</p>
+            <p class="text-sm text-gray-600">Specialization: ${data.specialization}</p>
+          </div>
+        `;
+        doctorCard.addEventListener("click", () => selectDoctor(data));
+        doctorList.appendChild(doctorCard);
+      });
+    }
+
+    function searchDoctors() {
+      const searchQuery = document.getElementById("searchInput").value.toLowerCase();
+      const cards = document.querySelectorAll("#doctor-list > div");
+      cards.forEach(card => {
+        const name = card.querySelector("h3").textContent.toLowerCase();
+        card.style.display = name.includes(searchQuery) ? "flex" : "none";
+      });
+    }
+
+    function selectDoctor(doctorData) {
+      alert(`You have selected Dr. ${doctorData.fullName}`);
+      // You can also store this in localStorage/session for next steps.
+    }
+
+    window.onload = fetchDoctors;
+    window.searchDoctors = searchDoctors;
+  </script>
+</head>
+<body class="bg-gray-100">
+  <div class="max-w-4xl mx-auto py-10 px-4">
+    <h1 class="text-3xl font-bold mb-6 text-center">Find Your Dermatologist</h1>
+
+    <input type="text" id="searchInput" oninput="searchDoctors()" placeholder="Search doctor by name" class="w-full px-4 py-2 border rounded-lg mb-6">
+
+    <div id="doctor-list" class="space-y-4">
+      <!-- Doctor cards will be rendered here -->
+    </div>
+  </div>
+</body>
+</html>

@@ -1,3 +1,5 @@
+<!-- doctordashboard.html -->
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -255,14 +257,32 @@
       </div>
     </footer>
 
-    <script>
-      const params = new URLSearchParams(window.location.search);
-      const username = params.get("username");
-      if (username) {
-        document.getElementById("welcome").innerText = username;
-      } else {
-        document.getElementById("welcome").innerText = "User";
+   <!-- Firebase Logout Script -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBoScNEhiFNdljF9D_BK8aBGuJiJ9XpX8o",
+      authDomain: "dermastreak-2caae.firebaseapp.com",
+      projectId: "dermastreak-2caae",
+      storageBucket: "dermastreak-2caae.appspot.com",
+      messagingSenderId: "32726012100",
+      appId: "1:32726012100:web:b5a2071c3ecea58810b991"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    window.logout = async function() {
+      try {
+        await signOut(auth);
+        sessionStorage.clear();
+        window.location.href = "home.html";
+      } catch (error) {
+        console.error("Logout failed:", error);
       }
-    </script>
+    };
+  </script>
   </body>
 </html>

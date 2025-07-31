@@ -1,3 +1,5 @@
+<!-- patient.html -->
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -50,11 +52,7 @@
             class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-slate-700 bg-white hover:bg-gray-50 focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             >My Profile</a
           >
-          <a
-            href="home.html"
-            class="inline-flex btn-scale items-center px-4 py-2 border border-transparent text-sm font-semibold rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-            >Log Out</a
-          >
+        <a href="#" onclick="logout()" class="inline-flex btn-scale items-center px-4 py-2 border border-transparent text-sm font-semibold rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:ring-2 focus:ring-offset-2 focus:ring-green-500">Log Out</a>
         </div>
       </nav>
     </header>
@@ -246,14 +244,37 @@
     </footer>
 
     <!-- Username Script -->
-    <script>
-      const params = new URLSearchParams(window.location.search);
-      const username = params.get("username");
-      if (username) {
-        document.getElementById("welcome").innerText = username;
-      } else {
-        document.getElementById("welcome").innerText = "DUMMY USER";
+  <script>
+    const username = sessionStorage.getItem("username");
+    document.getElementById("welcome").innerText = username || "User";
+  </script>
+
+  <!-- Firebase Logout Script -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBoScNEhiFNdljF9D_BK8aBGuJiJ9XpX8o",
+      authDomain: "dermastreak-2caae.firebaseapp.com",
+      projectId: "dermastreak-2caae",
+      storageBucket: "dermastreak-2caae.appspot.com",
+      messagingSenderId: "32726012100",
+      appId: "1:32726012100:web:b5a2071c3ecea58810b991"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    window.logout = async function() {
+      try {
+        await signOut(auth);
+        sessionStorage.clear();
+        window.location.href = "home.html";
+      } catch (error) {
+        console.error("Logout failed:", error);
       }
-    </script>
+    };
+  </script>
   </body>
-</html>
+</html> 
