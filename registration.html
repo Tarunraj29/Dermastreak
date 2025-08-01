@@ -242,6 +242,8 @@
       const userCred = await createUserWithEmailAndPassword(auth, email, password);
       await updateProfile(userCred.user, { displayName: name });
 
+      
+
       // Prepare user data
       const userData = {
         uid: userCred.user.uid,
@@ -267,14 +269,20 @@
       // Save to Firestore (modular syntax)
       await setDoc(doc(db, "users", userCred.user.uid), userData);
 
+  // Store username in multiple places
+        sessionStorage.setItem('username', name);  // Tab-specific
+        localStorage.setItem('username', name);    // Persistent
+        localStorage.setItem('userRole', role);    // Store role
+    
+
       // Success
       errorMsg.className = "text-center text-green-600 font-medium";
       errorMsg.textContent = "Registration successful! Redirecting...";
       
       setTimeout(() => {
         window.location.href = role === "doctor" 
-          ? "doctordashboard.html" 
-          : "patient.html";
+          ? `doctordashboard.html?name=${encodeURIComponent(name)}&role=doctor`
+          : `patient.html?name=${encodeURIComponent(name)}&role=patient`;
       }, 1500);
 
     } catch (error) {

@@ -210,21 +210,20 @@
       }
 
       // Store user data in session storage
-      sessionStorage.setItem("username", userData.name || username);
+      sessionStorage.setItem("username", userData.name || username);//primary storage
       sessionStorage.setItem("userRole", userData.role);
       sessionStorage.setItem("userId", user.uid);
       sessionStorage.setItem("userEmail", user.email);
 
-      // Set manual login flag for new sessions
-      localStorage.setItem("manualLogin", "true");
+       localStorage.setItem("username", userData.name || username);   // Fallback storage
 
       responseMsg.textContent = "Login successful! Redirecting...";
       responseMsg.className = "text-center text-green-600 font-medium";
 
       setTimeout(() => {
         const redirectUrl = userData.role.toLowerCase() === "doctor" 
-          ? "doctordashboard.html" 
-          : "patient.html";
+     ? `doctordashboard.html?name=${encodeURIComponent(userData.name || username)}`
+      : `patient.html?name=${encodeURIComponent(userData.name || username)}`;
         window.location.href = redirectUrl;
       }, 1000);
 
@@ -254,37 +253,43 @@
     }
   }
 
-  // Modified Auto-Redirect Logic
-  onAuthStateChanged(auth, async (user) => {
-    if (user) {
-      try {
-        const userDoc = await getDoc(doc(db, "users", user.uid));
-        if (userDoc.exists()) {
-          const userData = userDoc.data();
-          
-          // Use sessionStorage if available, otherwise use localStorage as fallback
-          const userRole = sessionStorage.getItem("userRole") || userData.role;
-          
-          // Set session storage if not already set
-          if (!sessionStorage.getItem("userId")) {
-            sessionStorage.setItem("username", userData.name || user.displayName || "");
-            sessionStorage.setItem("userRole", userRole);
-            sessionStorage.setItem("userId", user.uid);
-            sessionStorage.setItem("userEmail", user.email);
-          }
+//   // Modified Auto-Redirect Logic
+//  onAuthStateChanged(auth, async (user) => {
+//   // Only redirect if there's a user AND we're not coming from a manual logout
+//   if (user && localStorage.getItem("manualLogin") !== "false") {
+//     try {
+//       const userDoc = await getDoc(doc(db, "users", user.uid));
+//       if (userDoc.exists()) {
+//         const userData = userDoc.data();
+        
+//         // Clear any existing session data first
+//         sessionStorage.clear();
+        
+//         // Set fresh session data
+//         sessionStorage.setItem("username", userData.name || user.displayName || "");
+//         sessionStorage.setItem("userRole", userData.role);
+//         sessionStorage.setItem("userId", user.uid);
+//         sessionStorage.setItem("userEmail", user.email);
 
-          const redirectUrl = userRole.toLowerCase() === "doctor" 
-            ? "doctordashboard.html" 
-            : "patient.html";
-            
-          window.location.href = redirectUrl;
-        }
-      } catch (error) {
-        console.error("Auto-redirect error:", error);
-      }
-    }
-  });
+        
 
+//         const redirectUrl = userData.role.toLowerCase() === "doctor" 
+//           ? "doctordashboard.html" 
+//           : "patient.html";
+          
+//         window.location.href = redirectUrl;
+//       }
+//     } catch (error) {
+//       console.error("Auto-redirect error:", error);
+//       // If there's an error, clear everything and stay on login page
+//       sessionStorage.clear();
+//       localStorage.removeItem("manualLogin");
+//     }
+//   } else {
+//     // Ensure manualLogin flag is set to false when no user
+//     localStorage.setItem("manualLogin", "false");
+//   }
+// });
   // Logout function - unchanged
   window.logout = async function() {
     await signOut(auth);

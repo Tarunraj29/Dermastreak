@@ -44,7 +44,7 @@
           <a href="doctordashboard.html" class="hover:text-green-600 text-green-500"
             >Home</a
           >
-          <a href="about.html" class="hover:text-green-600">About</a>
+          <a href="about2.html" class="hover:text-green-600">About</a>
          
           <a
             href="profile.html"
@@ -257,7 +257,13 @@
       </div>
     </footer>
 
-   <!-- Firebase Logout Script -->
+   <!-- Username Script -->
+  <script>
+    const username = sessionStorage.getItem("username");
+    document.getElementById("welcome").innerText = username || "User";
+  </script>
+
+  <!-- Firebase Logout Script -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
     import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
@@ -273,6 +279,38 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
+    
+    //for display username
+
+    
+  function displayUsername() {
+    const welcomeEl = document.getElementById("welcome");
+    if (!welcomeEl) return;
+
+    // Check for username in this order:
+    // 1. URL parameters (immediate redirect)
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlName = urlParams.get('name');
+    
+    // 2. sessionStorage (from login/registration)
+    const sessionName = sessionStorage.getItem('username');
+    
+    // 3. localStorage (persistent storage)
+    const localName = localStorage.getItem('username');
+    
+    // 4. Firebase Auth (if page refreshed)
+    const authName = auth.currentUser?.displayName;
+
+    welcomeEl.textContent = urlName || sessionName || localName || authName || "User";
+  }
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      displayUsername();
+    } else {
+      window.location.href = "login.html";
+    }
+  });
 
     window.logout = async function() {
       try {

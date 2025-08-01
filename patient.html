@@ -189,7 +189,7 @@
     </main>
 
     <!-- Footer -->
-    <footer
+ <footer
       class="w-full bg-[#0a1e3a] border-t border-gray-700 py-10 text-slate-300"
     >
       <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 px-6">
@@ -211,10 +211,14 @@
           <h3 class="text-white font-bold text-lg mb-4">Quick Links</h3>
           <ul class="space-y-2 text-sm">
             <li><a href="patient.html" class="hover:underline">Home</a></li>
-            <li><a href="about.html" class="hover:underline">About Us</a></li>
-            <li><a href="services.html" class="hover:underline">Our Services</a></li>
-            <li><a href="blog.html" class="hover:underline">Skin Tips Blog</a></li>
-            <li><a href="contact.html" class="hover:underline">Contact</a></li>
+            <li><a href="about1.html" class="hover:underline">About Us</a></li>
+            <li>
+              <a href="services1.html" class="hover:underline">Our Services</a>
+            </li>
+            <li>
+              <a href="blog1.html" class="hover:underline">Skin Tips Blog</a>
+            </li>
+            <li><a href="contact1.html" class="hover:underline">Contact</a></li>
           </ul>
         </div>
         <div>
@@ -227,18 +231,34 @@
         <div>
           <h3 class="text-white font-bold text-lg mb-4">Legal & Social</h3>
           <ul class="space-y-2 text-sm mb-4">
-            <li><a href="privacy.html" class="hover:underline">Privacy Policy</a></li>
-            <li><a href="terms.html" class="hover:underline">Terms & Conditions</a></li>
+            <li>
+              <a href="privacy.html" class="hover:underline">Privacy Policy</a>
+            </li>
+            <li>
+              <a href="terms.html" class="hover:underline"
+                >Terms & Conditions</a
+              >
+            </li>
           </ul>
           <div class="flex space-x-4">
-            <a href="#" class="hover:text-white"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" class="hover:text-white"><i class="fab fa-instagram"></i></a>
-            <a href="#" class="hover:text-white"><i class="fab fa-twitter"></i></a>
-            <a href="#" class="hover:text-white"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="hover:text-white"
+              ><i class="fab fa-facebook-f"></i
+            ></a>
+            <a href="#" class="hover:text-white"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a href="#" class="hover:text-white"
+              ><i class="fab fa-twitter"></i
+            ></a>
+            <a href="#" class="hover:text-white"
+              ><i class="fab fa-linkedin-in"></i
+            ></a>
           </div>
         </div>
       </div>
-      <div class="border-t border-gray-700 mt-10 pt-6 text-center text-sm text-slate-400 px-6">
+      <div
+        class="border-t border-gray-700 mt-10 pt-6 text-center text-sm text-slate-400 px-6"
+      >
         © 2025 Dermastreak. All rights reserved.
       </div>
     </footer>
@@ -252,7 +272,7 @@
   <!-- Firebase Logout Script -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-    import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+    import { getAuth, signOut, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBoScNEhiFNdljF9D_BK8aBGuJiJ9XpX8o",
@@ -266,15 +286,50 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    window.logout = async function() {
-      try {
-        await signOut(auth);
-        sessionStorage.clear();
-        window.location.href = "home.html";
-      } catch (error) {
-        console.error("Logout failed:", error);
-      }
-    };
+//for display the user name
+
+ 
+  function displayUsername() {
+    const welcomeEl = document.getElementById("welcome");
+    if (!welcomeEl) return;
+
+    // Check for username in this order:
+    // 1. URL parameters (immediate redirect)
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlName = urlParams.get('name');
+    
+    // 2. sessionStorage (from login/registration)
+    const sessionName = sessionStorage.getItem('username');
+    
+    // 3. localStorage (persistent storage)
+    const localName = localStorage.getItem('username');
+    
+    // 4. Firebase Auth (if page refreshed)
+    const authName = auth.currentUser?.displayName;
+
+    welcomeEl.textContent = urlName || sessionName || localName || authName || "User";
+  }
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      displayUsername();
+    } else {
+      window.location.href = "login.html";
+    }
+  });
+
+window.logout = async function() {
+  try {
+    await signOut(auth);
+    // Clear all storage
+    sessionStorage.clear();
+    localStorage.clear();
+    // Force reload to ensure all state is cleared
+    window.location.href = "home.html";
+  } catch (error) {
+    console.error("Logout failed:", error);
+  }
+};
   </script>
   </body>
 </html> 
