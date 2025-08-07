@@ -9,6 +9,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
   <style>
     .message-container { height: 60vh; overflow-y: auto; padding: 1rem; background-color: #f9fafb; }
     .message { max-width: 75%; margin-bottom: 0.75rem; padding: 0.75rem 1rem; border-radius: 1rem; word-wrap: break-word; position: relative; }
@@ -18,14 +19,17 @@
     .loading-spinner { animation: spin 1s linear infinite; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     .chat-header { background-color: #f0f2f5; padding: 1rem; border-bottom: 1px solid #e9edef; }
+    .status-indicator { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-left: 5px; }
+    .online { background-color: #10B981; }
+    .offline { background-color: #6B7280; }
+    .error-message { background-color: #FEE2E2; color: #B91C1C; padding: 1rem; border-radius: 0.5rem; margin: 1rem; text-align: center; }
   </style>
 </head>
 <body class="bg-gray-50">
-  <!-- Header -->
   <header class="bg-white shadow">
     <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
       <a href="patient.html" class="flex items-center space-x-3">
-        <img src="logo.jpg" class="h-12 w-12 rounded-full" alt="Dermastreak Logo">
+        <img src="https://via.placeholder.com/48" class="h-12 w-12 rounded-full" alt="Dermastreak Logo">
         <span class="font-extrabold text-slate-900 text-lg">Dermastreak</span>
       </a>
       <div class="hidden md:flex items-center space-x-4 text-sm font-normal">
@@ -37,27 +41,30 @@
     </nav>
   </header>
 
-  <!-- Main Content -->
   <main class="max-w-3xl mx-auto px-4 py-6">
     <div class="bg-white rounded-xl shadow-sm overflow-hidden">
       <div class="chat-header">
         <h1 id="chatTitle" class="text-xl font-bold text-gray-900">Chat</h1>
-        <p id="chatSubtitle" class="text-gray-600">Loading conversation...</p>
+        <div class="flex items-center">
+          <p id="chatSubtitle" class="text-gray-600">Loading conversation...</p>
+          <span id="userStatus" class="ml-2 hidden">
+            <span id="statusIndicator" class="status-indicator"></span>
+            <span id="statusText" class="text-sm text-gray-500 ml-1"></span>
+          </span>
+        </div>
       </div>
 
       <div id="messagesContainer" class="message-container">
         <div id="loadingMessages" class="text-center py-12">
-          <div class="inline-block loading-spinner text-green-600 text-4xl mb-4">
-            <i class="fas fa-spinner"></i>
-          </div>
+          <i class="fas fa-spinner loading-spinner text-green-600 text-4xl mb-4"></i>
           <p class="text-gray-600">Loading messages...</p>
         </div>
       </div>
 
       <div class="bg-white p-4 border-t">
         <form id="messageForm" class="flex gap-2">
-          <input type="text" id="messageInput" placeholder="Type your message..." class="flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
-          <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+          <input type="text" id="messageInput" placeholder="Type your message..." class="flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500" autocomplete="off">
+          <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50">
             <i class="fas fa-paper-plane"></i>
           </button>
         </form>
@@ -66,43 +73,66 @@
   </main>
 
   <script>
+    // Firebase Configuration
     const firebaseConfig = {
       apiKey: "AIzaSyBoScNEhiFNdljF9D_BK8aBGuJiJ9XpX8o",
       authDomain: "dermastreak-2caae.firebaseapp.com",
       projectId: "dermastreak-2caae",
       storageBucket: "dermastreak-2caae.appspot.com",
       messagingSenderId: "32726012100",
-      appId: "1:32726012100:web:b5a2071c3ecea58810b991"
+      appId: "1:32726012100:web:b5a2071c3ecea58810b991",
+      databaseURL: "https://dermastreak-2caae-default-rtdb.firebaseio.com/"
     };
 
+    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
+    const rtdb = firebase.database();
 
+    // DOM Elements
     const messagesContainer = document.getElementById('messagesContainer');
     const loadingMessages = document.getElementById('loadingMessages');
     const messageForm = document.getElementById('messageForm');
     const messageInput = document.getElementById('messageInput');
     const chatTitle = document.getElementById('chatTitle');
     const chatSubtitle = document.getElementById('chatSubtitle');
+    const userStatus = document.getElementById('userStatus');
+    const statusIndicator = document.getElementById('statusIndicator');
+    const statusText = document.getElementById('statusText');
 
+    // App State
     let currentUser = null;
     let recipientUser = null;
     let chatId = null;
     let isDoctor = false;
     let messageListener = null;
+    let statusListener = null;
 
+    // Helper Functions
     function formatTime(timestamp) {
       if (!timestamp) return '';
       const date = timestamp.toDate();
       return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     }
 
-    // ENFORCE CONSISTENT ORDERED CHAT ID
     function generateChatId(userId1, userId2) {
       return userId1 < userId2 ? `${userId1}_${userId2}` : `${userId2}_${userId1}`;
     }
 
+    function showError(message) {
+      messagesContainer.innerHTML = `
+        <div class="error-message">
+          <i class="fas fa-exclamation-circle mr-2"></i>
+          ${message}
+          <button onclick="window.location.href='patient.html'" class="mt-2 px-3 py-1 bg-green-600 text-white rounded-md text-sm">
+            Go Back
+          </button>
+        </div>
+      `;
+    }
+
+    // Chat Initialization
     async function initChat() {
       try {
         currentUser = auth.currentUser;
@@ -113,25 +143,33 @@
 
         const urlParams = new URLSearchParams(window.location.search);
         const recipientId = urlParams.get('recipient');
-        if (!recipientId) {
-          window.location.href = 'patient.html';
+
+        if (!recipientId || !/^[a-zA-Z0-9]{20,}$/.test(recipientId)) {
+          showError("Invalid recipient specified");
+          return;
+        }
+
+        // Case-insensitive self-chat prevention
+        if (recipientId.toLowerCase() === currentUser.uid.toLowerCase()) {
+          showError("You cannot chat with yourself");
           return;
         }
 
         const currentUserDoc = await db.collection('users').doc(currentUser.uid).get();
-        const currentUserName = currentUserDoc.data().name;
+        const currentUserName = currentUserDoc.data()?.name || "User";
 
         const recipientDoc = await db.collection('users').doc(recipientId).get();
-        if (!recipientDoc.exists) throw new Error("Recipient not found");
+        if (!recipientDoc.exists) {
+          showError("Recipient not found");
+          return;
+        }
 
         recipientUser = recipientDoc.data();
-        recipientUser.uid = recipientId;  // Important to access UID later
-
-        // GENERATE CONSISTENT CHAT ID (ORDER FIXED HERE)
+        recipientUser.uid = recipientId;
         chatId = generateChatId(currentUser.uid, recipientId);
+        isDoctor = currentUserDoc.data()?.role === 'doctor';
 
-        isDoctor = currentUserDoc.data().role === 'doctor';
-
+        // Setup UI
         if (isDoctor) {
           chatTitle.textContent = `Chat with Patient ${recipientUser.name}`;
           chatSubtitle.textContent = 'Patient Consultation';
@@ -140,6 +178,26 @@
           chatSubtitle.textContent = 'Medical Consultation';
         }
 
+        // Setup presence
+        const userStatusRef = rtdb.ref(`status/${currentUser.uid}`);
+        userStatusRef.set({
+          status: 'online',
+          lastChanged: firebase.database.ServerValue.TIMESTAMP
+        });
+        userStatusRef.onDisconnect().set({
+          status: 'offline',
+          lastChanged: firebase.database.ServerValue.TIMESTAMP
+        });
+
+        // Setup status listener
+        statusListener = rtdb.ref(`status/${recipientId}`).on('value', (snapshot) => {
+          const status = snapshot.val()?.status || 'offline';
+          userStatus.classList.remove('hidden');
+          statusIndicator.className = `status-indicator ${status === 'online' ? 'online' : 'offline'}`;
+          statusText.textContent = status === 'online' ? 'Online' : 'Offline';
+        });
+
+        // Create/update chat document
         await db.collection('chats').doc(chatId).set({
           participants: {
             [currentUser.uid]: true,
@@ -157,17 +215,15 @@
 
       } catch (error) {
         console.error("Chat initialization error:", error);
-        messagesContainer.innerHTML = `
-          <div class="text-center py-12 text-red-500">
-            <i class="fas fa-exclamation-triangle text-4xl mb-4"></i>
-            <p>Failed to load chat. Please try again.</p>
-          </div>
-        `;
+        showError(error.message.includes("permission") ? 
+          "You don't have permission to access this chat" : 
+          "Failed to load chat. Please try again.");
       } finally {
         loadingMessages.classList.add('hidden');
       }
     }
 
+    // Message Handling
     function setupMessageListener() {
       if (messageListener) messageListener();
 
@@ -176,6 +232,7 @@
         .orderBy('timestamp', 'asc')
         .onSnapshot(snapshot => {
           messagesContainer.innerHTML = '';
+          
           if (snapshot.empty) {
             messagesContainer.innerHTML = `
               <div class="text-center py-12 text-gray-500">
@@ -189,29 +246,34 @@
           snapshot.forEach(doc => {
             const message = doc.data();
             renderMessage(message);
+            
+            // Mark as read if recipient
+            if (message.recipientId === currentUser.uid && message.status !== 'read') {
+              doc.ref.update({ status: 'read' });
+            }
           });
 
           messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }, error => {
           console.error("Message listener error:", error);
+          showError("Failed to load messages. Please refresh the page.");
         });
     }
 
     function renderMessage(message) {
       const isCurrentUser = message.senderId === currentUser.uid;
       const messageDiv = document.createElement('div');
-
-      if (isDoctor) {
-        messageDiv.className = `message ${isCurrentUser ? 'doctor-message' : 'patient-message'}`;
-      } else {
-        messageDiv.className = `message ${isCurrentUser ? 'patient-message' : 'doctor-message'}`;
-      }
+      messageDiv.className = `message ${isCurrentUser ? 
+        (isDoctor ? 'doctor-message' : 'patient-message') : 
+        (isDoctor ? 'patient-message' : 'doctor-message')}`;
 
       messageDiv.innerHTML = `
         <p>${message.text}</p>
-        <p class="message-time">${formatTime(message.timestamp)}</p>
+        <p class="message-time">
+          ${formatTime(message.timestamp)}
+          ${isCurrentUser ? ' • ' + message.status : ''}
+        </p>
       `;
-
       messagesContainer.appendChild(messageDiv);
     }
 
@@ -220,12 +282,16 @@
       const messageText = messageInput.value.trim();
       if (!messageText) return;
 
-      try {
-        messageInput.disabled = true;
+      const submitButton = messageForm.querySelector('button');
+      submitButton.disabled = true;
+      messageInput.disabled = true;
+      submitButton.innerHTML = '<i class="fas fa-spinner loading-spinner"></i>';
 
+      try {
         await db.collection('chats').doc(chatId).collection('messages').add({
           text: messageText,
           senderId: currentUser.uid,
+          recipientId: recipientUser.uid,
           timestamp: firebase.firestore.FieldValue.serverTimestamp(),
           status: 'delivered'
         });
@@ -237,19 +303,24 @@
         });
 
         messageInput.value = '';
-
       } catch (error) {
         console.error("Error sending message:", error);
-        alert("Failed to send message. Please try again.");
+        showError("Failed to send message. Please try again.");
       } finally {
+        submitButton.disabled = false;
         messageInput.disabled = false;
+        submitButton.innerHTML = '<i class="fas fa-paper-plane"></i>';
+        messageInput.focus();
       }
     }
 
+    // Cleanup
     function cleanup() {
       if (messageListener) messageListener();
+      if (statusListener) rtdb.ref(`status/${recipientUser?.uid}`).off('value', statusListener);
     }
 
+    // Event Listeners
     auth.onAuthStateChanged(user => {
       if (user) {
         initChat(); 
@@ -266,6 +337,7 @@
         window.location.href = 'login.html';
       }).catch(error => {
         console.error("Logout error:", error);
+        showError("Failed to logout. Please try again.");
       });
     };
   </script>
