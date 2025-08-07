@@ -496,6 +496,14 @@
                 View Details
               </button>
             ` : ''}
+          
+            ${(isConfirmed || isCompleted) ? `
+              <button onclick="openChat('${appointment.doctorId}', '${appointment.id}')" 
+                      class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm">
+                Open Chat
+              </button>
+            ` : ''}
+
           </div>
         `;
         
@@ -631,6 +639,10 @@
         }
       });
     });
+    // Open chat with doctor/patient
+function openChat(recipientId, appointmentId) {
+  window.location.href = `chat.html?recipient=${recipientId}&appointment=${appointmentId}`;
+}
   </script>
 </body>
 </html>

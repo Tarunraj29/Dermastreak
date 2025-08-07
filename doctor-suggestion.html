@@ -301,8 +301,14 @@
                   class="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm font-medium">
             Book Appointment
           </button>
+        <button onclick="openChat('${doctorId}')" 
+          class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium">
+    Chat
+  </button>
+
         </div>
-      `;
+</div>
+`;
       
       doctorsContainer.appendChild(card);
     }
@@ -420,6 +426,11 @@
         }
       });
     });
+
+    // Open chat with doctor
+function openChat(recipientId) {
+  window.location.href = `chat.html?recipient=${recipientId}`;
+}
   </script>
 </body>
 </html>

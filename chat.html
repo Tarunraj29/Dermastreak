@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat | Dermastreak</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <style>
+    .message-container { height: 60vh; overflow-y: auto; padding: 1rem; background-color: #f9fafb; }
+    .message { max-width: 75%; margin-bottom: 0.75rem; padding: 0.75rem 1rem; border-radius: 1rem; word-wrap: break-word; position: relative; }
+    .patient-message { background-color: #dcf8c6; margin-left: auto; border-bottom-right-radius: 0.25rem; }
+    .doctor-message { background-color: #ffffff; margin-right: auto; border-bottom-left-radius: 0.25rem; box-shadow: 0 1px 0.5px rgba(0,0,0,0.1); }
+    .message-time { font-size: 0.75rem; color: #6b7280; text-align: right; margin-top: 0.25rem; }
+    .loading-spinner { animation: spin 1s linear infinite; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .chat-header { background-color: #f0f2f5; padding: 1rem; border-bottom: 1px solid #e9edef; }
+  </style>
+</head>
+<body class="bg-gray-50">
+  <!-- Header -->
+  <header class="bg-white shadow">
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+      <a href="patient.html" class="flex items-center space-x-3">
+        <img src="logo.jpg" class="h-12 w-12 rounded-full" alt="Dermastreak Logo">
+        <span class="font-extrabold text-slate-900 text-lg">Dermastreak</span>
+      </a>
+      <div class="hidden md:flex items-center space-x-4 text-sm font-normal">
+        <a href="patient.html" class="hover:text-green-600 text-green-500">Home</a>
+        <a href="about1.html" class="hover:text-green-600">About</a>
+        <a href="profile.html" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-slate-700 bg-white hover:bg-gray-50">My Profile</a>
+        <a href="#" onclick="logout()" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-semibold rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700">Log Out</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-3xl mx-auto px-4 py-6">
+    <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+      <div class="chat-header">
+        <h1 id="chatTitle" class="text-xl font-bold text-gray-900">Chat</h1>
+        <p id="chatSubtitle" class="text-gray-600">Loading conversation...</p>
+      </div>
+
+      <div id="messagesContainer" class="message-container">
+        <div id="loadingMessages" class="text-center py-12">
+          <div class="inline-block loading-spinner text-green-600 text-4xl mb-4">
+            <i class="fas fa-spinner"></i>
+          </div>
+          <p class="text-gray-600">Loading messages...</p>
+        </div>
+      </div>
+
+      <div class="bg-white p-4 border-t">
+        <form id="messageForm" class="flex gap-2">
+          <input type="text" id="messageInput" placeholder="Type your message..." class="flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
+          <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBoScNEhiFNdljF9D_BK8aBGuJiJ9XpX8o",
+      authDomain: "dermastreak-2caae.firebaseapp.com",
+      projectId: "dermastreak-2caae",
+      storageBucket: "dermastreak-2caae.appspot.com",
+      messagingSenderId: "32726012100",
+      appId: "1:32726012100:web:b5a2071c3ecea58810b991"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    const messagesContainer = document.getElementById('messagesContainer');
+    const loadingMessages = document.getElementById('loadingMessages');
+    const messageForm = document.getElementById('messageForm');
+    const messageInput = document.getElementById('messageInput');
+    const chatTitle = document.getElementById('chatTitle');
+    const chatSubtitle = document.getElementById('chatSubtitle');
+
+    let currentUser = null;
+    let recipientUser = null;
+    let chatId = null;
+    let isDoctor = false;
+    let messageListener = null;
+
+    function formatTime(timestamp) {
+      if (!timestamp) return '';
+      const date = timestamp.toDate();
+      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+
+    // ENFORCE CONSISTENT ORDERED CHAT ID
+    function generateChatId(userId1, userId2) {
+      return userId1 < userId2 ? `${userId1}_${userId2}` : `${userId2}_${userId1}`;
+    }
+
+    async function initChat() {
+      try {
+        currentUser = auth.currentUser;
+        if (!currentUser) {
+          window.location.href = 'login.html';
+          return;
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const recipientId = urlParams.get('recipient');
+        if (!recipientId) {
+          window.location.href = 'patient.html';
+          return;
+        }
+
+        const currentUserDoc = await db.collection('users').doc(currentUser.uid).get();
+        const currentUserName = currentUserDoc.data().name;
+
+        const recipientDoc = await db.collection('users').doc(recipientId).get();
+        if (!recipientDoc.exists) throw new Error("Recipient not found");
+
+        recipientUser = recipientDoc.data();
+        recipientUser.uid = recipientId;  // Important to access UID later
+
+        // GENERATE CONSISTENT CHAT ID (ORDER FIXED HERE)
+        chatId = generateChatId(currentUser.uid, recipientId);
+
+        isDoctor = currentUserDoc.data().role === 'doctor';
+
+        if (isDoctor) {
+          chatTitle.textContent = `Chat with Patient ${recipientUser.name}`;
+          chatSubtitle.textContent = 'Patient Consultation';
+        } else {
+          chatTitle.textContent = `Chat with Dr. ${recipientUser.name}`;
+          chatSubtitle.textContent = 'Medical Consultation';
+        }
+
+        await db.collection('chats').doc(chatId).set({
+          participants: {
+            [currentUser.uid]: true,
+            [recipientId]: true
+          },
+          participantNames: {
+            [currentUser.uid]: currentUserName,
+            [recipientId]: recipientUser.name
+          },
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+        setupMessageListener();
+
+      } catch (error) {
+        console.error("Chat initialization error:", error);
+        messagesContainer.innerHTML = `
+          <div class="text-center py-12 text-red-500">
+            <i class="fas fa-exclamation-triangle text-4xl mb-4"></i>
+            <p>Failed to load chat. Please try again.</p>
+          </div>
+        `;
+      } finally {
+        loadingMessages.classList.add('hidden');
+      }
+    }
+
+    function setupMessageListener() {
+      if (messageListener) messageListener();
+
+      messageListener = db.collection('chats').doc(chatId)
+        .collection('messages')
+        .orderBy('timestamp', 'asc')
+        .onSnapshot(snapshot => {
+          messagesContainer.innerHTML = '';
+          if (snapshot.empty) {
+            messagesContainer.innerHTML = `
+              <div class="text-center py-12 text-gray-500">
+                <i class="fas fa-comments text-4xl mb-4"></i>
+                <p>No messages yet. Start the conversation!</p>
+              </div>
+            `;
+            return;
+          }
+
+          snapshot.forEach(doc => {
+            const message = doc.data();
+            renderMessage(message);
+          });
+
+          messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }, error => {
+          console.error("Message listener error:", error);
+        });
+    }
+
+    function renderMessage(message) {
+      const isCurrentUser = message.senderId === currentUser.uid;
+      const messageDiv = document.createElement('div');
+
+      if (isDoctor) {
+        messageDiv.className = `message ${isCurrentUser ? 'doctor-message' : 'patient-message'}`;
+      } else {
+        messageDiv.className = `message ${isCurrentUser ? 'patient-message' : 'doctor-message'}`;
+      }
+
+      messageDiv.innerHTML = `
+        <p>${message.text}</p>
+        <p class="message-time">${formatTime(message.timestamp)}</p>
+      `;
+
+      messagesContainer.appendChild(messageDiv);
+    }
+
+    async function sendMessage(e) {
+      e.preventDefault();
+      const messageText = messageInput.value.trim();
+      if (!messageText) return;
+
+      try {
+        messageInput.disabled = true;
+
+        await db.collection('chats').doc(chatId).collection('messages').add({
+          text: messageText,
+          senderId: currentUser.uid,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+          status: 'delivered'
+        });
+
+        await db.collection('chats').doc(chatId).update({
+          lastMessage: messageText,
+          lastMessageTime: firebase.firestore.FieldValue.serverTimestamp(),
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        messageInput.value = '';
+
+      } catch (error) {
+        console.error("Error sending message:", error);
+        alert("Failed to send message. Please try again.");
+      } finally {
+        messageInput.disabled = false;
+      }
+    }
+
+    function cleanup() {
+      if (messageListener) messageListener();
+    }
+
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        initChat(); 
+      } else {
+        window.location.href = 'login.html';
+      }
+    });
+
+    messageForm.addEventListener('submit', sendMessage);
+    window.addEventListener('beforeunload', cleanup);
+
+    window.logout = function() {
+      auth.signOut().then(() => {
+        window.location.href = 'login.html';
+      }).catch(error => {
+        console.error("Logout error:", error);
+      });
+    };
+  </script>
+</body>
+</html>
